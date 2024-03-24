@@ -1,6 +1,6 @@
 
-#ifndef LINKED_LIST
-#define LINKED_LIST
+#ifndef LINKEDLIST
+#define LINKEDLIST
 
 #include "mushroom.h"
 
@@ -13,10 +13,19 @@ class LinkedList
 
 		Node();
 		Node(Mushroom data);
+
+		Node operator=(Mushroom rhs);
 	};
 	private:
-		Node* mHead, mTail;
+		Node* mHead, *mTail;
+		int mCount;
 
+
+	public:
+		void insertAtBack(Mushroom data);
+
+
+		
 };
 
 
