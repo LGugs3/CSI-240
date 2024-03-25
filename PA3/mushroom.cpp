@@ -5,44 +5,77 @@
 Mushroom::Mushroom()
 {
 	mIsPoisonous = true;
-	mDistance = 0;
 	for (int i = 0; i < NUM_ATTRIBUTES; i++)
 	{
 		mAttributes[i] = 0;
 	}
+
+	if (k == -1) { setK(); }
+
+	mDistance = new double[k];
+	for (int j = 0; j < k; j++)
+	{
+		mDistance[j] = -1.0;
+	}
+
+}
+
+Mushroom::~Mushroom()
+{
+	delete[] mDistance;
 }
 
 Mushroom::Mushroom(bool isPoisonous, int attributes[])
 {
 	mIsPoisonous = isPoisonous;
+	mDistance = -1;
 	for (int i = 0; i < NUM_ATTRIBUTES; i++)
 	{
 		mAttributes[i] = attributes[i];
 	}
-	mDistance = setDistance();//object to compare to
 
+	if (k == -1) { setK(); }
 }
 
-void Mushroom::loadData()
+int Mushroom::getAttribute(int index)
 {
-	std::ifstream fin;
-	
+	return mAttributes[index];
 }
 
-void Mushroom::setDistance(Mushroom comparator)//execute after all other data has been loaded
+int Mushroom::getK()
 {
-	double acc = 0;
-	for (int i = 0; i < NUM_ATTRIBUTES - 1; i++) //"- 1" b/c last attribute is not used in calculations 
+	return k;
+}
+
+double Mushroom::compareDistance(Mushroom comparator)//execute after all other data has been loaded
+{
+	double acc = 0.0;
+	for (int j = 0; j < NUM_ATTRIBUTES; j++)
 	{
-		acc += pow(comparator.mAttributes[i] - mAttributes[i], 2);
+		acc += pow(comparator.mAttributes[j] - mAttributes[j], 2);
 	}
 	acc = sqrt(acc);
-	mDistance = acc;
+
+	return acc;
 }
 
+void Mushroom::setK()
+{
+	do
+	{
+		std::cout << "Enter k value: ";
+		std::cin >> k;
+	} while (k % 2 == 0 || k < 0);
 
+}
 
-
+void Mushroom::setDistance(double distance[])
+{
+	for (int i = 0; i < k; i++)
+	{
+		mDistance[i] = distance[i];
+	}
+}
 
 
 std::ifstream& operator>>(std::ifstream& input, Mushroom& obj)
@@ -64,7 +97,7 @@ std::ifstream& operator>>(std::ifstream& input, Mushroom& obj)
 	return input;
 }
 
-Mushroom Mushroom::operator=(Mushroom rhs)
+Mushroom& Mushroom::operator=(Mushroom& rhs)
 {
 	this->mDistance = rhs.mDistance;
 	this->mIsPoisonous = rhs.mIsPoisonous;
