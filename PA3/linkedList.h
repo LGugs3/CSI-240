@@ -1,10 +1,9 @@
 
-#ifndef LINKEDLIST
-#define LINKEDLIST
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
 
 #include "mushroom.h"
 
-const std::string FILE_NAME = "../../../data.txt";
 
 
 class LinkedList
@@ -29,10 +28,10 @@ class LinkedList
 		~LinkedList();
 		void insertAtBack(Mushroom data);
 		int getMCount();
-		void loadData();
+		void loadData(const std::string FILE_NAME);
 		int getDataAttribute(int Nodeindex, int AttrIndex);
 		void getMushroomDistance(int index);
-		void mushroomDistances(Mushroom data);
+		void mushroomDistances(Mushroom testCase);
 		void loopMushroomsforDistances();
 		
 		

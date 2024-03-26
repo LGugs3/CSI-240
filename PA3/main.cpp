@@ -2,17 +2,18 @@
 #include "linkedList.h"
 
 int Mushroom::k = -1; //initial value
+const std::string KNOWN_DATA_FILE = "../../../data.txt";
+const std::string UNKNOWN_DATA_FILE = "../../../input.txt";
+
 
 
 int main()
 {
-	LinkedList nearestNeighbor;
+	LinkedList knownData;
+	LinkedList testCases;
 
-	nearestNeighbor.loadData();
-	nearestNeighbor.loopMushroomsforDistances();
-
-	//debug
-	nearestNeighbor.getMushroomDistance(0);
+	knownData.loadData(KNOWN_DATA_FILE);
+	testCases.loadData(UNKNOWN_DATA_FILE);
 
 
 	return 0;

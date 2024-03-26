@@ -1,7 +1,7 @@
 
 
-#ifndef MUSHROOM
-#define MUSHROOM
+#ifndef MUSHROOM_H
+#define MUSHROOM_H
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +16,7 @@ struct Mushroom
 {
 	private:
 		bool mIsPoisonous;
-		double* mDistance;
+		double *mDistance;
 		int mAttributes[NUM_ATTRIBUTES];
 
 		static int k;
@@ -27,6 +27,8 @@ struct Mushroom
 		double compareDistance(Mushroom comparator);
 		int getAttribute(int index) const;
 		void getDistance();
+		void setAttributes();
+		void setIsPoisonous(bool bools[]);
 		void setK();
 		int getK();
 		void setDistance(double distance[]);

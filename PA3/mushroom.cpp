@@ -12,7 +12,7 @@ Mushroom::Mushroom()
 
 	if (k == -1) { setK(); } //-1 is the starting value
 
-	mDistance = new double[k];
+	mDistance = new double [k];
 	for (int j = 0; j < k; j++)
 	{
 		mDistance[j] = 10000.0;
@@ -22,7 +22,6 @@ Mushroom::Mushroom()
 
 Mushroom::~Mushroom()
 {
-	delete[] mDistance;
 }
 
 Mushroom::Mushroom(bool isPoisonous, int attributes[])
@@ -50,6 +49,35 @@ void Mushroom::getDistance()
 		std::cout << mDistance[i] << " ";
 	}
 	std::cout << std::endl;
+}
+
+void Mushroom::setAttributes()
+{
+	for (int i = 0; i < NUM_ATTRIBUTES; i++)
+	{
+		std::cout << "Input attribute: ";
+		std::cin >> mAttributes[i];
+	}
+}
+
+void Mushroom::setIsPoisonous(bool bools[])
+{
+	if (k == 1)
+	{
+		mIsPoisonous = bools[0]; //if k is one the array only has one value
+		return;
+	}
+
+	int poisonousCount = 0, edibleCount = 0;
+
+	for (int i = 0; i < k; i++)
+	{
+		if (bools[i]) { poisonousCount++; }
+		else { edibleCount++; }
+	}
+
+	if (poisonousCount > edibleCount) { mIsPoisonous = true; }
+	else { mIsPoisonous = false; }
 }
 
 int Mushroom::getK()
