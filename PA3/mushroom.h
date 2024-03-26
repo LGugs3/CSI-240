@@ -25,7 +25,8 @@ struct Mushroom
 		~Mushroom();
 		Mushroom(bool isPoisonous, int attributes[]);
 		double compareDistance(Mushroom comparator);
-		int getAttribute(int index);
+		int getAttribute(int index) const;
+		void getDistance();
 		void setK();
 		int getK();
 		void setDistance(double distance[]);
@@ -33,6 +34,7 @@ struct Mushroom
 
 		friend std::ifstream& operator>>(std::ifstream& input, Mushroom& obj);
 		Mushroom& operator=(Mushroom& rhs);
+		bool operator==(Mushroom& rhs);
 
 
 };

@@ -10,12 +10,12 @@ Mushroom::Mushroom()
 		mAttributes[i] = 0;
 	}
 
-	if (k == -1) { setK(); }
+	if (k == -1) { setK(); } //-1 is the starting value
 
 	mDistance = new double[k];
 	for (int j = 0; j < k; j++)
 	{
-		mDistance[j] = -1.0;
+		mDistance[j] = 10000.0;
 	}
 
 }
@@ -28,18 +28,28 @@ Mushroom::~Mushroom()
 Mushroom::Mushroom(bool isPoisonous, int attributes[])
 {
 	mIsPoisonous = isPoisonous;
-	mDistance = -1;
 	for (int i = 0; i < NUM_ATTRIBUTES; i++)
 	{
 		mAttributes[i] = attributes[i];
 	}
 
 	if (k == -1) { setK(); }
+	mDistance = new double[k];
 }
 
-int Mushroom::getAttribute(int index)
+int Mushroom::getAttribute(int index) const
 {
 	return mAttributes[index];
+}
+
+void Mushroom::getDistance()
+{
+	int i;
+	for (i = 0; i < k; i++)
+	{
+		std::cout << mDistance[i] << " ";
+	}
+	std::cout << std::endl;
 }
 
 int Mushroom::getK()
@@ -107,4 +117,22 @@ Mushroom& Mushroom::operator=(Mushroom& rhs)
 	}
 	
 	return *this;
+}
+
+bool Mushroom::operator==(Mushroom& rhs)
+{
+	if (mIsPoisonous != rhs.mIsPoisonous) { return false; }
+
+	int i = 0;
+	for (i = 0; i < NUM_ATTRIBUTES; i++)
+	{
+		if (mAttributes[i] != rhs.mAttributes[i]) { return false; }
+	}
+
+	for (i = 0; i < k; i++)
+	{
+		if (mDistance[i] != rhs.mDistance[i]) { return false; }
+	}
+
+	return true;
 }

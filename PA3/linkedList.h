@@ -31,7 +31,10 @@ class LinkedList
 		int getMCount();
 		void loadData();
 		int getDataAttribute(int Nodeindex, int AttrIndex);
-		void mushroomDistances();
+		void getMushroomDistance(int index);
+		void mushroomDistances(Mushroom data);
+		void loopMushroomsforDistances();
+		
 		
 
 

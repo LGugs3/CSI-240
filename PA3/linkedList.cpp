@@ -55,6 +55,18 @@ int LinkedList::getDataAttribute(int NodeIndex, int AttrIndex)
 
 }
 
+void LinkedList::getMushroomDistance(int index)
+{
+	Node* tmp;
+	int i;
+
+	for (i = 0, tmp = mHead; i < index; i++) { tmp = tmp->mNext; }
+
+	tmp->mData.getDistance();
+
+
+}
+
 int LinkedList::getMCount()
 {
 	return mCount;
@@ -76,39 +88,40 @@ void LinkedList::insertAtBack(Mushroom data)
 		mTail->mNext = newNode;
 		mTail = newNode;
 	}
+	newNode->mNext = nullptr;
 	mCount++;
 
 }
 
-void LinkedList::mushroomDistances()
+void LinkedList::mushroomDistances(Mushroom data)
 {
-	Node* tmp, *tmp2;
+	Node* tmp;
 	int k = mHead->mData.getK();
-	double* distances = new double[k];
-	double newDistance;
-	bool unusedDistance;
+	double* distances = new double[k]; //create pointer array to temporarily store k closest distances
+	double newDistance = 10000.0;
+	bool unusedDistance = false;
 
-	for (int i = 0; i < k; i++)
+	for (int i = 0; i < k; i++) { distances[i] = 10000.0; } //initializes all values of array to really big numbers that will never be used
+
+
+	for (int i = 0; i < k; i++) //loops through the number of times k is, to get k number of closest distances
 	{
 		for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext)
 		{
-			for (tmp2 = mHead; tmp2 != nullptr; tmp2->mNext)
-			{
-				if (tmp == tmp2) { continue; }
-				newDistance = tmp->mData.compareDistance(tmp2->mData);
+			if (tmp->mData == data) { continue; } //if the Mushrooms are the same
+
+			newDistance = tmp->mData.compareDistance(data); //compare the distance between the two points
 				
-				unusedDistance = true;
-				for (int j = 0; j < k; j++)
-				{
-					if (distances[j] == newDistance) { unusedDistance = false; }
-				}
-				if (unusedDistance) { distances[i] = newDistance; }
+			unusedDistance = true; //assume distance is unused until proven false
+			for (int j = 0; j < k; j++)
+			{
+				if (distances[j] == newDistance) { unusedDistance = false; } //if the distance matches any others in the pointer array the distance has already been used
 			}
+			if (unusedDistance && newDistance < distances[i]) { distances[i] = newDistance; } //if its a new distance and its smaller than the previous one
 		}
 	}
-	tmp->mData.setDistance(distances[]);
 
-
+	data.setDistance(distances); //set distances
 
 	delete[] distances;
 
@@ -132,6 +145,19 @@ void LinkedList::loadData()
 
 	}
 }
+
+void LinkedList::loopMushroomsforDistances()
+{
+	Node* tmp;
+
+	for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext) { mushroomDistances(tmp->mData); }
+}
+
+
+
+
+
+
 
 LinkedList::Node& LinkedList::Node::operator=(Mushroom& rhs)
 {
