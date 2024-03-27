@@ -27,11 +27,13 @@ struct Mushroom
 		double compareDistance(Mushroom comparator);
 		int getAttribute(int index) const;
 		void getDistance();
+		bool getIsPoisonous();
 		int getK();
 		void setAttributes();
 		void setDistance(double distance[]);
-		void setK();
+		void setK(const std::string file);
 		void setIsPoisonous(bool bools[]);
+		void setIsPoisonous(bool value);
 		
 		
 

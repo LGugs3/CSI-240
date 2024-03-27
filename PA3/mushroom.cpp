@@ -9,8 +9,7 @@ Mushroom::Mushroom()
 		mAttributes[i] = 0;
 	}
 
-	if (k == -1) { setK(); } //-1 is the starting value
-
+	if (k == -1) { setK(UNKNOWN_DATA_FILE); }
 	mDistance = new double [k];
 	for (int j = 0; j < k; j++)
 	{
@@ -31,7 +30,6 @@ Mushroom::Mushroom(bool isPoisonous, int attributes[])
 		mAttributes[i] = attributes[i];
 	}
 
-	if (k == -1) { setK(); }
 	mDistance = new double[k];
 }
 
@@ -48,6 +46,11 @@ void Mushroom::getDistance()
 		std::cout << mDistance[i] << " ";
 	}
 	std::cout << std::endl;
+}
+
+bool Mushroom::getIsPoisonous()
+{
+	return mIsPoisonous;
 }
 
 void Mushroom::setAttributes()
@@ -79,6 +82,11 @@ void Mushroom::setIsPoisonous(bool bools[])
 	else { mIsPoisonous = false; }
 }
 
+void Mushroom::setIsPoisonous(bool value)
+{
+	mIsPoisonous = value;
+}
+
 
 int Mushroom::getK()
 {
@@ -98,14 +106,17 @@ double Mushroom::compareDistance(Mushroom comparator)//execute after all other d
 }
 
 
-void Mushroom::setK()
+void Mushroom::setK(const std::string file)
 {
-	do
-	{
-		std::cout << "Enter k value: ";
-		std::cin >> k;
-	} while (k % 2 == 0 || k < 0);
+	std::ifstream fin;
+	fin.open(file);
 
+	if (fin.fail()) { std::cout << "input.txt failed to open" << std::endl; }
+	else
+	{
+		fin >> k;
+		fin.close();
+	}
 }
 
 

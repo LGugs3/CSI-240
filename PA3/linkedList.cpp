@@ -16,14 +16,15 @@ LinkedList::~LinkedList()
 	{
 		tmp = mHead;
 
-		mHead = mHead->mNext;
+		mHead = tmp->mNext;
 		tmp->mNext = nullptr;
 
 		delete tmp;
 	}
-	mCount = 0;
 	mHead = nullptr;
 	mTail = nullptr;
+	mCount = 0;
+	
 }
 
 
@@ -128,28 +129,6 @@ void LinkedList::mushroomDistances(Mushroom testCase)
 
 	testCase.setIsPoisonous(savedBools);
 
-
-
-
-
-
-	//for (int i = 0; i < k; i++) //loops through the number of times k is, to get k number of closest distances
-	//{
-	//	for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext)
-	//	{
-	//		if (tmp->mData == data) { continue; } //if the Mushrooms are the same
-
-	//		newDistance = tmp->mData.compareDistance(data); //compare the distance between the two points
-	//			
-	//		unusedDistance = true; //assume distance is unused until proven false
-	//		for (int j = 0; j < k; j++)
-	//		{
-	//			if (distances[j] == newDistance) { unusedDistance = false; } //if the distance matches any others in the pointer array the distance has already been used
-	//		}
-	//		if (unusedDistance && newDistance < distances[i]) { distances[i] = newDistance; } //if its a new distance and its smaller than the previous one
-	//	}
-	//}
-
 	testCase.setDistance(distances); //set distances
 
 	delete[] distances;
@@ -157,39 +136,83 @@ void LinkedList::mushroomDistances(Mushroom testCase)
 
 }
 
-void LinkedList::makePredictions(LinkedList knownData, const std::string newFile)
+void LinkedList::makePredictions(LinkedList& knownData, LinkedList& newData, const std::string newFile)//Linked lists must be references or desructor will be called once out of scope
 {
-	std::ifstream finTest;
-	std::ofstream output;
+	int k = mHead->mData.getK();
+	Node* knownTmp, *newTmp;
+	int i, j, index;
+	double newDistance, *distances;
+	distances = new double[k];
+	bool* savedBools = new bool[k];
+	bool unusedDistance, exactMatch = false;
 
-	finTest.open(newFile); //if the file already exists then delete it and make a new one
-	if (finTest.is_open())
+	for (i = 0; i < k; i++)//initializing values
 	{
-		finTest.close();
-		remove(newFile.c_str());
+		distances[i] = 10000.0;
+		savedBools[i] = true;
 	}
-	output.open(newFile);
-
+	newDistance = 10000.0;
 	
+	for (newTmp = newData.mHead; newTmp != nullptr; newTmp = newTmp->mNext) //loops through new data to set all distances
+	{
+		exactMatch = false;
+		for (index = 0; index < k && exactMatch == false; index++)//loops through the known data k times to get distances
+		{
+			for (knownTmp = knownData.mHead; knownTmp != nullptr; knownTmp = knownTmp->mNext)
+			{
+				if (knownTmp == newTmp) { continue; }//if the two tmps are pointing to the same location, aka the same mushroom
+				
+				newDistance = newTmp->mData.compareDistance(knownTmp->mData);//make new distance
+				newDistance = trunc(newDistance * 1000) / 1000;//get rid of not needed points
+
+				if (newDistance == 0.0) //if the test mushroom is the same as one of the known mushrooms
+				{
+					newTmp->mData.setIsPoisonous(knownTmp->mData.getIsPoisonous());
+					exactMatch = true;
+					break;
+				}
+
+				unusedDistance = true;//assume the new distance is true until proven false
+				for (j = 0; j < k; j++)
+				{
+					if (distances[j] == newDistance) { unusedDistance = false; }
+				}
+
+				if (unusedDistance && newDistance < distances[index]) { distances[index] = newDistance; } //adds distance to array if it is unused and the new value is smaller than the old value
+			}
+		}
+		if (!exactMatch) { newTmp->mData.setIsPoisonous(savedBools); }
+		newTmp->mData.setDistance(distances);
+	}
+
+	delete[] distances;
+	delete[] savedBools;
+
+	newData.savePredictions();
 
 }
 
-void LinkedList::loadData(const std::string FILE_NAME)
+void LinkedList::loadData(const std::string FILE_NAME, bool isTestFile)
 {
 	std::ifstream fin;
 	Mushroom newMushroom;
+	std::string junk;
 
 	fin.open(FILE_NAME);
 	if (fin.fail()) { std::cout << FILE_NAME << " failed to open" << std::endl; }
-
 	else
 	{
+		if (isTestFile)
+		{
+			getline(fin, junk);
+		}
+		
 		while (!fin.eof())
 		{
 			fin >> newMushroom;
 			insertAtBack(newMushroom);
 		}
-
+		if (!isTestFile) { mCount--; }
 	}
 }
 
@@ -200,7 +223,27 @@ void LinkedList::loopMushroomsforDistances()
 	for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext) { mushroomDistances(tmp->mData); }
 }
 
+void LinkedList::savePredictions()
+{
+	std::ifstream finTest;
+	std::ofstream output;
 
+	finTest.open(PREDICTIONS_DATA_FILE); //if the file already exists then delete it and make a new one
+	if (finTest.is_open())
+	{
+		finTest.close();
+		remove(PREDICTIONS_DATA_FILE.c_str());
+	}
+	output.open(PREDICTIONS_DATA_FILE);
+
+	Node* tmp;
+
+	for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext)
+	{
+		output << tmp->mData;
+	}
+	output.close();
+}
 
 
 
@@ -210,4 +253,13 @@ LinkedList::Node& LinkedList::Node::operator=(Mushroom& rhs)
 {
 	mData = rhs;
 	return *this;
+}
+
+std::ofstream& operator<<(std::ofstream& output, Mushroom obj)
+{
+	if (obj.getIsPoisonous()) { output << "poisonous"; }
+	else { output << "edible"; }
+
+	output << std::endl;
+	return output;
 }
