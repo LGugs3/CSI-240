@@ -107,7 +107,7 @@ void LinkedList::mushroomDistances(Mushroom testCase)
 	for (i = 0; i < k; i++) //initializes all values of array to really big numbers that will never be used
 	{
 		distances[i] = 10000.0;
-		savedBools[i] = -1;
+		savedBools[i] = false;
 	}
 
 	for (i = 0; i < k; i++)
@@ -154,6 +154,23 @@ void LinkedList::mushroomDistances(Mushroom testCase)
 
 	delete[] distances;
 	delete[] savedBools;
+
+}
+
+void LinkedList::makePredictions(LinkedList knownData, const std::string newFile)
+{
+	std::ifstream finTest;
+	std::ofstream output;
+
+	finTest.open(newFile); //if the file already exists then delete it and make a new one
+	if (finTest.is_open())
+	{
+		finTest.close();
+		remove(newFile.c_str());
+	}
+	output.open(newFile);
+
+	
 
 }
 

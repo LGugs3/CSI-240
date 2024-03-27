@@ -15,6 +15,8 @@ int main()
 	knownData.loadData(KNOWN_DATA_FILE);
 	testCases.loadData(UNKNOWN_DATA_FILE);
 
+	testCases.makePredictions(knownData, UNKNOWN_DATA_FILE);
+
 
 	return 0;
 }

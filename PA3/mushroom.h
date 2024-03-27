@@ -27,11 +27,13 @@ struct Mushroom
 		double compareDistance(Mushroom comparator);
 		int getAttribute(int index) const;
 		void getDistance();
-		void setAttributes();
-		void setIsPoisonous(bool bools[]);
-		void setK();
 		int getK();
+		void setAttributes();
 		void setDistance(double distance[]);
+		void setK();
+		void setIsPoisonous(bool bools[]);
+		
+		
 
 
 		friend std::ifstream& operator>>(std::ifstream& input, Mushroom& obj);

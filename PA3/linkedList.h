@@ -32,6 +32,7 @@ class LinkedList
 		int getDataAttribute(int Nodeindex, int AttrIndex);
 		void getMushroomDistance(int index);
 		void mushroomDistances(Mushroom testCase);
+		void makePredictions(LinkedList knownData, const std::string newFile);
 		void loopMushroomsforDistances();
 		
 		

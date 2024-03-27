@@ -1,5 +1,4 @@
 
-#include "mushroom.h"
 #include "linkedList.h"
 
 Mushroom::Mushroom()
@@ -80,6 +79,7 @@ void Mushroom::setIsPoisonous(bool bools[])
 	else { mIsPoisonous = false; }
 }
 
+
 int Mushroom::getK()
 {
 	return k;
@@ -97,6 +97,7 @@ double Mushroom::compareDistance(Mushroom comparator)//execute after all other d
 	return acc;
 }
 
+
 void Mushroom::setK()
 {
 	do
@@ -107,6 +108,7 @@ void Mushroom::setK()
 
 }
 
+
 void Mushroom::setDistance(double distance[])
 {
 	for (int i = 0; i < k; i++)
@@ -114,6 +116,11 @@ void Mushroom::setDistance(double distance[])
 		mDistance[i] = distance[i];
 	}
 }
+
+
+
+
+
 
 
 std::ifstream& operator>>(std::ifstream& input, Mushroom& obj)
