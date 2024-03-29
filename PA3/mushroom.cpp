@@ -1,6 +1,33 @@
+/*
+Author: Liam Gugliotta
+Class : CSI-240-04
+Assignment : PA3
+Date Assigned : 03/22/2024
+Due Date : Due - 03/29/2024 13:00 EST
+Description :
+cpp file for Mushroom class.
+Certification of Authenticity :
+I certify that this is entirely my own work, except where I have given
+fully - documented references to the work of others.I understand the definition and
+consequences of plagiarism and acknowledge that the assessor of this assignment
+may, for the purpose of assessing this assignment :
+	-Reproduce this assignment and provide a copy to another member of academic staff;
+and /or
+-Communicate a copy of this assignment to a plagiarism checking service(which may
+	then retain a copy of this assignment on its database for the purpose of future
+	plagiarism checking)
+*/
 
 #include "linkedList.h"
 
+/**************************************************************************************************************************************
+* Class & Struct Construtors & Deconstructors
+***************************************************************************************************************************************/
+
+/*Pre: none
+* Post: initialized mushroom object
+* Purpose: To initialize mushroom object
+*/
 Mushroom::Mushroom()
 {
 	mIsPoisonous = true;
@@ -10,7 +37,7 @@ Mushroom::Mushroom()
 	}
 
 	if (k == -1) { setK(UNKNOWN_DATA_FILE); }
-	mDistance = new double [k];
+	mDistance = new double [k]; //tried to delete mDistance is ~Mushroom but error thrown b/c tried to delete mDistance multiple times
 	for (int j = 0; j < k; j++)
 	{
 		mDistance[j] = 10000.0;
@@ -18,11 +45,23 @@ Mushroom::Mushroom()
 
 }
 
+/**************************************************************************************************************************************
+* Member functions
+***************************************************************************************************************************************/
+
+/*Pre: index for mAttribute
+* Post: specific single attribute in one mushroom
+* Purpose: to return a single attribute in a mushroom
+*/
 int Mushroom::getAttribute(int index) const
 {
 	return mAttributes[index];
 }
 
+/*Pre: none
+* Post: distances of mushroom printed to console
+* Purpose: To print the distances of the mushroom to the console
+*/
 void Mushroom::getDistance()
 {
 	int i;
@@ -33,11 +72,19 @@ void Mushroom::getDistance()
 	std::cout << std::endl;
 }
 
+/*Pre: none
+* Post: bool if the mushroom if poisonous or not
+* Purpose: to get the clasification of the mushroom
+*/
 bool Mushroom::getIsPoisonous()
 {
 	return mIsPoisonous;
 }
 
+/*Pre: none
+* Post: all attributes of mushroom set
+* Purpose: To set the attributes of a mushroom
+*/
 void Mushroom::setAttributes()
 {
 	for (int i = 0; i < NUM_ATTRIBUTES; i++)
@@ -47,6 +94,10 @@ void Mushroom::setAttributes()
 	}
 }
 
+/*Pre: array of bools from other isPoisonous mushrooms
+* Post: set the classification of the current mushroom
+* Purpose: to set the classification of the mushroom from an array of bools
+*/
 void Mushroom::setIsPoisonous(bool bools[])
 {
 	if (k == 1)
@@ -67,18 +118,29 @@ void Mushroom::setIsPoisonous(bool bools[])
 	else { mIsPoisonous = false; }
 }
 
+/*Pre: a single bool from an identical mushroom
+* Post: set the classification of the current mushroom'
+* Purpose: to set the classification of the mushroom from a single bool
+*/
 void Mushroom::setIsPoisonous(bool value)
 {
 	mIsPoisonous = value;
 }
 
-
+/*Pre: none
+* Post: the value of k
+* Purpose: to get the value of k
+*/
 int Mushroom::getK()
 {
 	return k;
 }
 
-double Mushroom::compareDistance(Mushroom comparator)//execute after all other data has been loaded
+/*Pre: mushroom to compare to *this
+* Post: distance between the two mushrooms
+* Purpose: to get the distance between the two mushrooms
+*/
+double Mushroom::compareDistance(Mushroom comparator)
 {
 	double acc = 0.0;
 	for (int j = 0; j < NUM_ATTRIBUTES; j++)
@@ -90,7 +152,10 @@ double Mushroom::compareDistance(Mushroom comparator)//execute after all other d
 	return acc;
 }
 
-
+/*Pre: name of the file that contains the k value
+* Post: the value of k is set
+* Purpose: To set the value of k
+*/
 void Mushroom::setK(const std::string file)
 {
 	std::ifstream fin;
@@ -104,7 +169,10 @@ void Mushroom::setK(const std::string file)
 	}
 }
 
-
+/*Pre: array of distances
+* Post: distances of mushroom set
+* Purpose: to set the distances of a mushroom
+*/
 void Mushroom::setDistance(double distance[])
 {
 	for (int i = 0; i < k; i++)
@@ -114,11 +182,14 @@ void Mushroom::setDistance(double distance[])
 }
 
 
+/**************************************************************************************************************************************
+* Operator Overloading
+***************************************************************************************************************************************/
 
-
-
-
-
+/*Pre: ifstream on left, mushroom on right
+* Post: read attributes and classification from file into mushroom object
+* Purpose: To read data from file into mushroom object
+*/
 std::ifstream& operator>>(std::ifstream& input, Mushroom& obj)
 {
 	std::string line;
@@ -138,6 +209,10 @@ std::ifstream& operator>>(std::ifstream& input, Mushroom& obj)
 	return input;
 }
 
+/*Pre: mushroom on both sides
+* Post: setting mushroom on right's data to the mushroom on the left
+* Purpose: to set the the mushroom's data equal to each other, specifically the right mushroom's data
+*/
 Mushroom& Mushroom::operator=(Mushroom& rhs)
 {
 	this->mDistance = rhs.mDistance;
@@ -150,6 +225,10 @@ Mushroom& Mushroom::operator=(Mushroom& rhs)
 	return *this;
 }
 
+/*Pre: mushroom on both sides
+* Post: bool if the mushrooms are equal to each other
+* Purpose: To see if the mushrooms are equal to each other
+*/
 bool Mushroom::operator==(Mushroom& rhs)
 {
 	if (mIsPoisonous != rhs.mIsPoisonous) { return false; }
@@ -166,4 +245,42 @@ bool Mushroom::operator==(Mushroom& rhs)
 	}
 
 	return true;
+}
+
+/*Pre: mushroom on both sides
+* Post: bool if the mushroom's distance of the left is greater than the mushroom's distance on the right
+* Purpose: To see if the left mushroom's distance is greater than the right mushroom's distance
+*/
+bool Mushroom::operator>(Mushroom rhs)
+{
+	double avgLhs = 0.0, avgRhs = 0.0;
+
+	for (int i = 0; i < k; i++)
+	{
+		avgLhs += mDistance[i];
+		avgRhs += rhs.mDistance[i];
+	}
+	avgLhs /= k;
+	avgRhs /= k;
+
+	return avgLhs > avgRhs;
+}
+
+/*Pre: mushroom on both sides
+* Post: bool if the mushroom's distance of the left is smaller than the mushroom's distance on the right
+* Purpose: To see if the left mushroom's distance is smaller than the right mushroom's distance
+*/
+bool Mushroom::operator<(Mushroom rhs)
+{
+	double avgLhs = 0.0, avgRhs = 0.0;
+
+	for (int i = 0; i < k; i++)
+	{
+		avgLhs += mDistance[i];
+		avgRhs += rhs.mDistance[i];
+	}
+	avgLhs /= k;
+	avgRhs /= k;
+
+	return avgLhs < avgRhs;
 }
