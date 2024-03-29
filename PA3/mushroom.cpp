@@ -18,21 +18,6 @@ Mushroom::Mushroom()
 
 }
 
-Mushroom::~Mushroom()
-{
-}
-
-Mushroom::Mushroom(bool isPoisonous, int attributes[])
-{
-	mIsPoisonous = isPoisonous;
-	for (int i = 0; i < NUM_ATTRIBUTES; i++)
-	{
-		mAttributes[i] = attributes[i];
-	}
-
-	mDistance = new double[k];
-}
-
 int Mushroom::getAttribute(int index) const
 {
 	return mAttributes[index];

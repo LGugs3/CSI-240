@@ -22,8 +22,6 @@ struct Mushroom
 		static int k;
 	public:
 		Mushroom();
-		~Mushroom();
-		Mushroom(bool isPoisonous, int attributes[]);
 		double compareDistance(Mushroom comparator);
 		int getAttribute(int index) const;
 		void getDistance();

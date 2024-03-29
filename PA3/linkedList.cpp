@@ -40,35 +40,6 @@ LinkedList::Node::Node(Mushroom data)
 	mNext = nullptr;
 }
 
-int LinkedList::getDataAttribute(int NodeIndex, int AttrIndex)
-{
-	if (NodeIndex >= mCount || AttrIndex >= NUM_ATTRIBUTES) { return -1; } //if indices specified are out of range
-
-	Node* tmp;
-	int i;
-	tmp = mHead;
-	for (i = 0; i < NodeIndex; i++)
-	{
-		tmp = tmp->mNext;
-	}
-
-	return tmp->mData.getAttribute(AttrIndex);
-
-}
-
-void LinkedList::getMushroomDistance(int index)
-{
-	Node* tmp;
-	int i;
-
-	tmp = mHead;
-	for (i = 0; i < index; i++) { tmp = tmp->mNext; }
-
-	tmp->mData.getDistance();
-
-
-}
-
 int LinkedList::getMCount()
 {
 	return mCount;
@@ -95,47 +66,6 @@ void LinkedList::insertAtBack(Mushroom data)
 
 }
 
-void LinkedList::mushroomDistances(Mushroom testCase)
-{
-	Node* tmp;
-	int k = mHead->mData.getK();
-	double* distances = new double[k]; //create pointer array to temporarily store k closest distances
-	double newDistance = 10000.0;
-	bool unusedDistance = false;
-	int i, j, index;
-	bool* savedBools = new bool[k];
-
-	for (i = 0; i < k; i++) //initializes all values of array to really big numbers that will never be used
-	{
-		distances[i] = 10000.0;
-		savedBools[i] = false;
-	}
-
-	for (i = 0; i < k; i++)
-	{
-		for (tmp = mHead, index = 0; tmp != nullptr; tmp = tmp->mNext, index++)
-		{
-			newDistance = testCase.compareDistance(tmp->mData);
-
-			unusedDistance = true;
-			for (j = 0; j < k; j++)
-			{
-				if (distances[j] == newDistance) { unusedDistance = false; }
-			}
-
-			if (unusedDistance && newDistance < distances[i]) { distances[i] = newDistance; }
-		}
-	}
-
-	testCase.setIsPoisonous(savedBools);
-
-	testCase.setDistance(distances); //set distances
-
-	delete[] distances;
-	delete[] savedBools;
-
-}
-
 void LinkedList::makePredictions(LinkedList& knownData, LinkedList& newData, const std::string newFile)//Linked lists must be references or desructor will be called once out of scope
 {
 	int k = mHead->mData.getK();
@@ -153,6 +83,14 @@ void LinkedList::makePredictions(LinkedList& knownData, LinkedList& newData, con
 	}
 	newDistance = 10000.0;
 	
+	/* Overall structure
+	* outer loop(newTmp = 0) loops through the new mushrooms, the ones without classification, to get their distances
+	* second for loop(k) loops k times to get the proper number of distances
+	* third for loop(knownTmp) loops through the mushrooms that have classifications to compare the distances
+	* another third for loop(j) loops through the distances array to see if the new potential distance is already used
+	* 
+	* Summary: The known mushrooms are looped through k times to find k distances that are closest to newTmp
+	*/
 	for (newTmp = newData.mHead; newTmp != nullptr; newTmp = newTmp->mNext) //loops through new data to set all distances
 	{
 		exactMatch = false;
@@ -163,7 +101,7 @@ void LinkedList::makePredictions(LinkedList& knownData, LinkedList& newData, con
 				if (knownTmp == newTmp) { continue; }//if the two tmps are pointing to the same location, aka the same mushroom
 				
 				newDistance = newTmp->mData.compareDistance(knownTmp->mData);//make new distance
-				newDistance = trunc(newDistance * 1000) / 1000;//get rid of not needed points
+				newDistance = trunc(newDistance * 1000) / 1000;//get rid of not needed decimal points
 
 				if (newDistance == 0.0) //if the test mushroom is the same as one of the known mushrooms
 				{
@@ -214,13 +152,6 @@ void LinkedList::loadData(const std::string FILE_NAME, bool isTestFile)
 		}
 		if (!isTestFile) { mCount--; }
 	}
-}
-
-void LinkedList::loopMushroomsforDistances()
-{
-	Node* tmp;
-
-	for (tmp = mHead; tmp != nullptr; tmp = tmp->mNext) { mushroomDistances(tmp->mData); }
 }
 
 void LinkedList::savePredictions()

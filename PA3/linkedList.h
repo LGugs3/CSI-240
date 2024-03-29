@@ -31,11 +31,7 @@ class LinkedList
 		void insertAtBack(Mushroom data);
 		int getMCount();
 		void loadData(const std::string FILE_NAME, bool isTestFile = false);
-		int getDataAttribute(int Nodeindex, int AttrIndex);
-		void getMushroomDistance(int index);
-		void mushroomDistances(Mushroom testCase);
 		void makePredictions(LinkedList& knownData, LinkedList& newData, const std::string newFile);
-		void loopMushroomsforDistances();
 		void savePredictions();
 		
 		
