@@ -5,7 +5,7 @@ Assignment: Final Project Part1
 Date Assigned: 04/05/2024
 Due Date: 04/09/2024
 Description:
-The Main file for part 1 of the final project.
+The header file for the User class
 Certification of Authenticity:
 I certify that this is entirely my own work, except where I have given
 fully-documented references to the work of others. I understand the definition and
@@ -18,10 +18,33 @@ then retain a copy of this assignment on its database for the purpose of future
 plagiarism checking)
 */
 
-#include "user.h"
+#include "account.h"
 
-
-int main()
+class User
 {
-	
-}
+	private:
+		Account* mAccounts;
+		int mAccountInUse;
+	public:
+		//Constructors
+		User();
+		User(const User& obj);
+		~User();
+
+		//Accessors
+		Account getAccount(int index);
+		int getAccountInUse();
+		std::string getID(int index);
+		std::string getPassword(int index);
+		
+		//mutators
+		void getAccount(int index, Account obj);
+		void setID(int index, std::string id);
+		void setPassword(int index, std::string password);
+		
+		//other
+		bool isUserExist(Account obj);
+		void loadData(std::string dataFileName);
+		void storeData(std::string dataFileName);
+		bool validateLogin(Account obj);
+};

@@ -62,6 +62,13 @@ Account::Account(const Account& obj)
 * Post: bool if the two Account objects are the same
 * Purpose: To compare two Account object to see if they are the same
 */
+Account Account::operator=(Account rhs)
+{
+	mId = rhs.mId;
+	mPassword = rhs.mPassword;
+
+	return *this;
+}
 bool Account::operator==(Account rhs)
 {
 	return (mId == rhs.mId && mPassword == rhs.mPassword);

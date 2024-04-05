@@ -5,7 +5,7 @@ Assignment: Final Project Part1
 Date Assigned: 04/05/2024
 Due Date: 04/09/2024
 Description:
-The Main file for part 1 of the final project.
+Contains the Member and friend functions of the USer class
 Certification of Authenticity:
 I certify that this is entirely my own work, except where I have given
 fully-documented references to the work of others. I understand the definition and
@@ -17,11 +17,44 @@ and/or
 then retain a copy of this assignment on its database for the purpose of future
 plagiarism checking)
 */
-
 #include "user.h"
 
-
-int main()
+/*Pre: none
+* Post: Initialized User object
+* Purpose: To initialize User object with default constructor
+*/
+User::User()
 {
+	mAccounts = nullptr;
+	mAccountInUse = 0;
+}
+
+/*Pre: User object
+* Post: initialized User object
+* Purpose: To initialize User object using the copy constructor
+*/
+User::User(const User& obj)
+{
+	if (mAccounts != nullptr) { delete[] mAccounts; }
+
+	mAccountInUse = obj.mAccountInUse;
+
+	int i;
+	mAccounts = new Account[mAccountInUse];
+
+	for (i = 0; i < mAccountInUse; i++)
+	{
+		mAccounts[i] = obj.mAccounts[i];
+	}
 	
 }
+
+User::~User()
+{
+	if (mAccounts != nullptr) { delete[] mAccounts; }
+	mAccounts = nullptr;
+
+	mAccountInUse = 0;
+}
+
+

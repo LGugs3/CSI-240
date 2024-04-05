@@ -33,6 +33,7 @@ class Account
 		Account(const Account& obj);
 
 		//Operator overloads
+		Account operator=(Account rhs);
 		bool operator==(Account rhs);
 		bool operator!=(Account rhs);
 		friend std::istream& operator>>(std::istream& input, Account& obj);

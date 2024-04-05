@@ -4,4 +4,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project("Users")
 
-add_executable(Users "final_part1.cpp" "account.h" "account.cpp")
+add_executable(Users "final_part1.cpp" "account.h" "account.cpp" "user.h" "user.cpp")
