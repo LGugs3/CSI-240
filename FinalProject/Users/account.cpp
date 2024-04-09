@@ -69,6 +69,7 @@ Account Account::operator=(Account rhs)
 
 	return *this;
 }
+
 bool Account::operator==(Account rhs)
 {
 	return (mId == rhs.mId && mPassword == rhs.mPassword);

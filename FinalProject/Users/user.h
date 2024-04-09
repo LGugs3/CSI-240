@@ -18,13 +18,16 @@ then retain a copy of this assignment on its database for the purpose of future
 plagiarism checking)
 */
 
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 #include "account.h"
 
 class User
 {
 	private:
 		Account* mAccounts;
-		int mAccountInUse;
+		int mAccountsInUse;
 	public:
 		//Constructors
 		User();
@@ -38,13 +41,14 @@ class User
 		std::string getPassword(int index);
 		
 		//mutators
-		void getAccount(int index, Account obj);
+		void setAccount(int index, Account obj);
 		void setID(int index, std::string id);
 		void setPassword(int index, std::string password);
 		
 		//other
 		bool isUserExist(Account obj);
 		void loadData(std::string dataFileName);
+		void login();
 		void storeData(std::string dataFileName);
-		bool validateLogin(Account obj);
+		bool validateLogin(Account obj) const;
 };

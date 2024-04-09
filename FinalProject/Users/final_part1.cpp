@@ -20,8 +20,13 @@ plagiarism checking)
 
 #include "user.h"
 
+const std::string USER_FILE_NAME = "../../../users.txt";
 
 int main()
 {
-	
+	User machine;
+
+	machine.loadData(USER_FILE_NAME);
+
+	machine.login();
 }
