@@ -20,7 +20,7 @@ plagiarism checking)
 
 #include "user.h"
 
-const std::string USER_FILE_NAME = "../../../users.txt";
+const std::string USER_FILE_NAME = "users.txt";
 
 int main()
 {
