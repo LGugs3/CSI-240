@@ -41,7 +41,7 @@ class Patient : public Person
 		void setDoctorId(string id);
 
 		//other
-		void display();
+		virtual void display();
 
 		//operator overloads
 		friend istream& operator>>(istream& input, Patient& obj);

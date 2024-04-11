@@ -19,6 +19,10 @@ plagiarism checking)
 */
 #include "patient.h"
 
+/************************************************************************************************************************
+* Constructors and Desctructor
+*************************************************************************************************************************/
+
 /*Pre: none
 * Post: initialized Patient object
 * Purpose: Initialize Patient object with default constructor
@@ -52,7 +56,12 @@ Patient::Patient(const Patient& obj) : Person(obj)
 */
 Patient::~Patient()
 {
+	//Left empty
 }
+
+/************************************************************************************************************************
+* Accessors
+*************************************************************************************************************************/
 
 /*Pre: none
 * Post: Doctor id
@@ -63,6 +72,10 @@ string Patient::getDoctorId()
 	return mDoctorId;
 }
 
+/************************************************************************************************************************
+* Mutators
+*************************************************************************************************************************/
+
 /*Pre: string for mDoctorId id
 * Post: new mDoctorId
 * Purpose: mutator for mDoctorId
@@ -72,14 +85,23 @@ void Patient::setDoctorId(string id)
 	mDoctorId = id;
 }
 
+/************************************************************************************************************************
+* Other
+*************************************************************************************************************************/
+
 /*Pre: none
 * Post: Patient data printed to console
 * Purpose: to print patient data to console
 */
 void Patient::display()
 {
-	cout << *this;
+	Person::display(); //method got from here: https://en.cppreference.com/w/cpp/language/virtual
+	cout << "   Doctor ID:  " << mDoctorId << endl;
 }
+
+/************************************************************************************************************************
+* Operator Overloads
+*************************************************************************************************************************/
 
 /*Pre: istream for input and patient object
 * Post: data from file set to Patient object
@@ -87,12 +109,7 @@ void Patient::display()
 */
 istream& operator>>(istream& input, Patient& obj)
 {
-	string id;
-	getline(input, id);
-	obj.setId(id);
-	getline(input, obj.mName);
-	getline(input, obj.mAddress);
-	getline(input, obj.mPhoneNumber);
+	input >> static_cast<Person&>(obj);
 	getline(input, obj.mDoctorId);
 
 	return input;

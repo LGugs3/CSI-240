@@ -21,6 +21,13 @@ plagiarism checking)
 
 int main()
 {
+	Patient patient1, patient2("12345", "Bobby", "0987 your house st city, ST 258741", "(951)-753-0147", "258970"), patient3(patient2);
+
+	patient1.display();
+	patient1.setDoctorId("12345");
+	patient1.display();
+
+	patient2.display();
 
 	return 0;
 }
