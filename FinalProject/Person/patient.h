@@ -46,6 +46,8 @@ class Patient : public Person
 		//operator overloads
 		friend istream& operator>>(istream& input, Patient& obj);
 		friend ostream& operator<<(ostream& output, Patient obj);
+		bool operator==(Patient& obj);
+		bool operator!=(Patient& obj);
 };
 
 #endif // !_PATIENT_H

@@ -25,9 +25,23 @@ int main()
 
 	patient1.display();
 	patient1.setDoctorId("12345");
+	cout << endl;
 	patient1.display();
+	cout << endl;
 
 	patient2.display();
+	cout << endl;
+
+	cout << patient1 << endl << patient1.getDoctorId() << endl;
+
+	cin >> patient1;
+	patient1.display();
+
+	cout << (bool)(patient1 == patient2) << endl
+		<< (bool)(patient1 != patient2) << endl
+		<< (bool)(patient2 == patient3) << endl;
+
+
 
 	return 0;
 }

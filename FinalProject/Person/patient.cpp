@@ -125,3 +125,21 @@ ostream& operator<<(ostream& output, Patient obj)
 
 	return output;
 }
+
+/*Pre: Patient object on both sides
+* Post: bool if the two object share the same ID
+* Purpose: To compare Patients to see if they have the same ID
+*/
+bool Patient::operator==(Patient& obj)
+{
+	return getId() == obj.getId();
+}
+
+/*Pre: Pateint object on both sides
+* Post: bool if the object IDs are different
+* Purpose: To compare Patient ID's to see if they are different
+*/
+bool Patient::operator!=(Patient& obj)
+{
+	return getId() != obj.getId();
+}
