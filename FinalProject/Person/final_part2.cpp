@@ -36,6 +36,7 @@ int main()
 
 	cin >> patient1;
 	patient1.display();
+	cout << endl;
 
 	cout << (bool)(patient1 == patient2) << endl
 		<< (bool)(patient1 != patient2) << endl
