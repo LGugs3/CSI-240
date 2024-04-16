@@ -4,4 +4,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project("Person")
 
-add_executable(Person "final_part2.cpp" "person.h" "person.cpp" "patient.h" "patient.cpp" "doctor.h" "doctor.cpp")
+add_executable(Person "person.h" "person.cpp" "patient.h" "patient.cpp" "doctor.h" "doctor.cpp" "final-part4.cpp" "doctorOperations.cpp" "doctorOperations.h" "patientOperations.h" "patientOperations.cpp")
