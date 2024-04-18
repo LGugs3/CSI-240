@@ -7,6 +7,13 @@
 
 #include "patient.h"
 #include "doctor.h"
+#include <filesystem>
+#include <sstream>
+
+
+const string DOCTOR_FILE_NAME = "../../../doctors.txt";
+
+
 
 int getDoctorIndex(Doctor doctors[], int numberOfDoctor, string doctorName);
 bool isDoctorExist(Doctor doctors[], int numberOfDoctor, string doctorName);
