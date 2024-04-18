@@ -1,10 +1,9 @@
 
-#ifndef _DOCTOROPERATIONS_H
-#define _DOCTOROPERATIONS_H
+#ifndef _PATIENTOPERATIONS_H
+#define _PATIENTOPERATIONS_H
 
+#include "doctorOperations.h"
 
-#include "patient.h"
-#include "doctor.h"
 
 
 void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor);

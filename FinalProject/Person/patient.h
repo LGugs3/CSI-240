@@ -48,6 +48,7 @@ class Patient : public Person
 		friend ostream& operator<<(ostream& output, Patient obj);
 		bool operator==(Patient& obj);
 		bool operator!=(Patient& obj);
+		Patient& operator=(Patient& rhs);
 };
 
 #endif // !_PATIENT_H

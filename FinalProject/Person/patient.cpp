@@ -143,3 +143,18 @@ bool Patient::operator!=(Patient& obj)
 {
 	return getId() != obj.getId();
 }
+
+/*Pre: two patient objects
+* Post: patient object on right set to patient object on left
+* Purpose: To set patient objects equal to each other
+*/
+Patient& Patient::operator=(Patient& rhs)
+{
+	this->setId(rhs.getId());
+	mName = rhs.mName;
+	mAddress = rhs.mAddress;
+	mPhoneNumber = rhs.mPhoneNumber;
+	mDoctorId = rhs.mDoctorId;
+
+	return *this;
+}
