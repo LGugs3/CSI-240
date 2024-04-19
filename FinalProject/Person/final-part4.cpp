@@ -30,6 +30,10 @@ int main()
 		}
 	}
 
+	addPatient(patients, doctors, numDoctors);
+
+
+
 
 
 

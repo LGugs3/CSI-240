@@ -10,7 +10,7 @@ int getDoctorIndex(Doctor doctors[], int numberOfDoctor, string doctorName)
     int i;
     for (i = 0; i < numberOfDoctor; i++)
     {
-        if (doctors[i] == doctorName)
+        if (doctors[i].getName() == doctorName)
         {
             return i;
         }
@@ -29,7 +29,7 @@ bool isDoctorExist(Doctor doctors[], int numberOfDoctor, string doctorName)
     int i;
     for (i = 0; i < numberOfDoctor; i++)
     {
-        if (doctors[i] == doctorName)
+        if (doctors[i].getName() == doctorName)
         {
             return true;
         }

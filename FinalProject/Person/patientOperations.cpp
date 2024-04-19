@@ -20,8 +20,6 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 	getline(cin, address);
 	cout << "Enter Patient Phone Number: ";
 	getline(cin, phoneNum);
-	cout << "Enter the Patient's Doctor ID: ";
-	getline(cin, docID);
 
 
 	//if new patient, create new array and add patient
@@ -33,6 +31,7 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 		cout << "Enter doctor name to put patient under: ";
 		getline(cin, docName);
 
+		//checks if the doctor name inputted exists already
 		if (!isDoctorExist(doctors, numberOfDoctor, docName))
 		{
 			cout << "Doctor name not found" << endl;
@@ -40,6 +39,7 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 		else
 		{
 			docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
+			docID = doctors[docIndex].getId();
 
 			Patient* tempArr; //holds old data
 			Patient tempPatient; //holds one object in array
@@ -72,9 +72,13 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 							patients[i][j] = tempArr[j];
 						}
 					}
+
+					//after adding a patient it is stored back into the file
+					storePatient(patients[i], doctors[i]);
+
+					//delete temp array after done using it
 					delete[] tempArr;
 					break;
-
 				}
 			}
 		}
@@ -130,4 +134,9 @@ void loadPatient(Patient*& patients, Doctor doctor)
 		patients[i] = Patient(patID, patName, patAddr, patPhoneNum, patDocID);
 
 	}
+}
+
+void storePatient(Patient patients[], Doctor doctors)
+{
+	//to be added to
 }
