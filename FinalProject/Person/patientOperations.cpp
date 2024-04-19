@@ -88,6 +88,52 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 	}
 }
 
+/*Pre: <patients> and <doctors> arrays and number of doctors
+* Post: patient data and doctor name printed to console if it exists
+* Purpose: To get the user the patient's data and the doctor they belong to
+*/
+void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
+{
+	string patientID;
+	cout << "Enter SSN: ";
+	getline(cin, patientID);
+
+	if (isPatientExist(patients, doctors, numberOfDoctor, patientID))
+	{
+		int docIndex, patIndex;
+
+		//patIndex and docIndex is pass by reference so we get the value that way
+		getPatientIndex(patients, doctors, numberOfDoctor, patientID, patIndex, docIndex);
+
+		cout << endl;
+		patients[docIndex][patIndex].display();
+		cout << endl << "Patient belongs to Dr. " << doctors[docIndex].getName() << endl;
+	}
+	else
+	{
+		cout << "Patient does not exist in the system" << endl;
+	}
+}
+
+/*Pre: patients and doctors arrays, number of doctors, patient index(unset), and doctor index
+* Post: <patientIndex> is set to the index of the value in the <patients> matrix
+* Purpose: To get the index of the patient with <id>
+*/
+void getPatientIndex(Patient** patients, Doctor doctors[], int numberOfDoctor, string id, int& patientIndex, int& doctorIndex)
+{
+	int i, j;
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		for (j = 0; j < doctors[i].getNumberOfPatient(); j ++)
+			if (patients[i][j].getId() == id)
+			{
+				doctorIndex = i;
+				patientIndex = j;
+				return;
+			}
+	}
+}
+
 /*Pre: <patients> matrix, <doctors> array, number of doctors and the string of the patient to find
 * Post: bool if the patient exists in the system or not
 * Purpose: To check if a patient exists within the current <patients> matrix

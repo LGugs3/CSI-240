@@ -30,8 +30,9 @@ int main()
 		}
 	}
 
-	addPatient(patients, doctors, numDoctors);
+	//addPatient(patients, doctors, numDoctors);
 
+	searchPatient(patients, doctors, numDoctors);
 
 
 
