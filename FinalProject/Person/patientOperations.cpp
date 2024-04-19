@@ -78,6 +78,7 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 
 					//after adding a patient it is stored back into the file
 					storePatient(patients[i], doctors[i]);
+					storeDoctor(doctors, numberOfDoctor);
 
 					//delete temp array after done using it
 					delete[] tempArr;
@@ -185,9 +186,61 @@ void loadPatient(Patient*& patients, Doctor doctor)
 	}
 }
 
+/*Pre: patients and doctors array as well as number of doctors
+* Post: patient specified removed from array
+* 
+*/
+void removePatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
+{
+	string patientID;
+	cout << "Enter SSN: ";
+	getline(cin, patientID);
+
+	if (isPatientExist(patients, doctors, numberOfDoctor, patientID))
+	{
+		int docIndex, delPatIndex, i, oldNumPat;
+
+		//patIndex and docIndex is pass by reference so we get the value that way
+		getPatientIndex(patients, doctors, numberOfDoctor, patientID, delPatIndex, docIndex);
+
+		oldNumPat = doctors[docIndex].getNumberOfPatient();
+		Patient* tempArr = new Patient[oldNumPat];
+		for (i = 0; i < oldNumPat; i++)
+		{
+			tempArr[i] = patients[docIndex][i];
+		}
+		delete[] patients[docIndex];
+
+		doctors[docIndex]--;
+		patients[docIndex] = new Patient[doctors[docIndex].getNumberOfPatient()];
+
+		for (i = 0; i < oldNumPat; i++)
+		{
+			if (i == delPatIndex) { continue; }//Patient to delete
+			if (i > delPatIndex) //after passing the deleted value move everything else over one
+			{
+				patients[docIndex][i - 1] = tempArr[i];
+			}
+			else
+			{
+				patients[docIndex][i] = tempArr[i];
+			}
+		}
+		delete[] tempArr;
+
+		storePatient(patients[docIndex], doctors[docIndex]);
+		storeDoctor(doctors, numberOfDoctor);
+		cout << "Patient removed" << endl;
+	}
+	else
+	{
+		cout << "Patient not found" << endl;
+	}
+}
+
 /*Pre: <doctors> and <patients> array to store
 * Post: <patients> data for <doctors> stored to file
-* Purpose: to store <patients> data to file
+* Purpose: to store <patients> from specific <doctors> to file
 */
 void storePatient(Patient patients[], Doctor doctors)
 {

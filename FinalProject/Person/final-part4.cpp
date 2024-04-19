@@ -29,10 +29,13 @@ int main()
 			cout << endl << endl;
 		}
 	}
-
+	//cout << "Patient to add:" << endl;
 	//addPatient(patients, doctors, numDoctors);
 
-	searchPatient(patients, doctors, numDoctors);
+	//searchPatient(patients, doctors, numDoctors);
+
+	cout << "patient to remove" << endl;
+	removePatient(patients, doctors, numDoctors);
 
 
 

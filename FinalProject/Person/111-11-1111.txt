@@ -1,10 +1,10 @@
-000-00-0000
-Alice Clark
-123 West Ave, Burlington, VT 05401
-(123) 456 7890
-111-11-1111
 000-00-0002
 Louis Smith
 75 North St, Boston, MA 02101
 (741) 459 7410
+111-11-1111
+000-00-0003
+pat 3
+no addr
+123 852 0134
 111-11-1111
