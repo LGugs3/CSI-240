@@ -151,10 +151,10 @@ bool Patient::operator!=(Patient& obj)
 Patient& Patient::operator=(Patient& rhs)
 {
 	this->setId(rhs.getId());
-	mName = rhs.mName;
-	mAddress = rhs.mAddress;
-	mPhoneNumber = rhs.mPhoneNumber;
-	mDoctorId = rhs.mDoctorId;
+	this->mName = rhs.mName;
+	this->mAddress = rhs.mAddress;
+	this->mPhoneNumber = rhs.mPhoneNumber;
+	this->mDoctorId = rhs.mDoctorId;
 
 	return *this;
 }

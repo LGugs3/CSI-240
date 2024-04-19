@@ -53,7 +53,7 @@ int loadDoctor(Doctor*& doctors)
     }
 
     stringstream ss;
-    int numDoctors, i, index, numPatients;
+    int numDoctors, i, index, numPatients;;
     string junk, name, id;
     getline(fin, junk);
     numDoctors = stoi(junk);
@@ -65,6 +65,7 @@ int loadDoctor(Doctor*& doctors)
         getline(fin, name);
         getline(fin, id);
         getline(fin, junk);
+        ss.clear();
         ss.str(junk);
         ss >> index >> numPatients;
 

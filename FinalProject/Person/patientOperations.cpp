@@ -81,8 +81,53 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 	}
 }
 
+/*Pre: <patients> matrix, <doctors> array, number of doctors and the string of the patient to find
+* Post: bool if the patient exists in the system or not
+* Purpose: To check if a patient exists within the current <patients> matrix
+*/
 bool isPatientExist(Patient** patients, Doctor doctors[], int numberOfDoctor, string id)
 {
-	//to be added to
+	int i, j;
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		for (j = 0; j < doctors[i].getNumberOfPatient(); j++)
+		{
+			if (patients[i][j].getId() == id) { return true; }
+		}
+	}
+
 	return false;
+}
+
+/*Pre: <patients> array belonging to <doctor>
+* Post: patients loaded from <doctor> file into <patients> array
+* Purpose: To load all patients into doctor array
+*/
+void loadPatient(Patient*& patients, Doctor doctor)
+{
+	string docId = doctor.getId();
+	int docIndex = doctor.getIndex(), numPatients = doctor.getNumberOfPatient();
+
+	ifstream fin;
+	patients = new Patient[numPatients];
+	
+	fin.open("../../../" + docId + ".txt");
+	if (fin.fail())
+	{
+		cerr << docId << " fin failed to open" << endl;
+	}
+
+	string patID, patName, patAddr, patPhoneNum, patDocID;
+	int i;
+	for (i = 0; i < numPatients; i++)
+	{
+		getline(fin, patID);
+		getline(fin, patName);
+		getline(fin, patAddr);
+		getline(fin, patPhoneNum);
+		getline(fin, patDocID);
+
+		patients[i] = Patient(patID, patName, patAddr, patPhoneNum, patDocID);
+
+	}
 }
