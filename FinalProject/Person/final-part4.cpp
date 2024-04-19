@@ -36,7 +36,6 @@ int main()
 
 
 
-
 	//deleting dynamic arrays
 
 	delete[] doctors;

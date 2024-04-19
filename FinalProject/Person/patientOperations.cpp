@@ -21,9 +21,12 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 	cout << "Enter Patient Phone Number: ";
 	getline(cin, phoneNum);
 
-
+	if (isPatientExist(patients, doctors, numberOfDoctor, SSN))
+	{
+		cout << "Patient SSN already exists" << endl;
+	}
 	//if new patient, create new array and add patient
-	if (!isPatientExist(patients, doctors, numberOfDoctor, SSN))
+	else
 	{
 		int i, j;
 		string docName;
@@ -136,7 +139,33 @@ void loadPatient(Patient*& patients, Doctor doctor)
 	}
 }
 
+/*Pre: <doctors> and <patients> array to store
+* Post: <patients> data for <doctors> stored to file
+* Purpose: to store <patients> data to file
+*/
 void storePatient(Patient patients[], Doctor doctors)
 {
-	//to be added to
+	ofstream ofs;
+	string fileName = "../../../" + doctors.getId() + ".txt";
+
+	if (std::filesystem::exists(fileName))
+	{
+		remove((fileName).c_str());
+	}
+
+	ofs.open(fileName);
+
+	int i;
+	for (i = 0; i < doctors.getNumberOfPatient(); i++)
+	{
+		ofs << patients[i].getId() << endl
+			<< patients[i].getName() << endl
+			<< patients[i].getAddress() << endl
+			<< patients[i].getPhoneNumber() << endl
+			<< patients[i].getDoctorId() << endl;
+	}
+
+	ofs.close();
+
+
 }
