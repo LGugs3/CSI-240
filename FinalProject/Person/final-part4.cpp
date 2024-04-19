@@ -34,8 +34,11 @@ int main()
 
 	//searchPatient(patients, doctors, numDoctors);
 
-	cout << "patient to remove" << endl;
-	removePatient(patients, doctors, numDoctors);
+	//cout << "patient to remove" << endl;
+	//removePatient(patients, doctors, numDoctors);
+
+	cout << "Remaning a patient" << endl;
+	updatePatient(patients, doctors, numDoctors);
 
 
 

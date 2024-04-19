@@ -188,7 +188,7 @@ void loadPatient(Patient*& patients, Doctor doctor)
 
 /*Pre: patients and doctors array as well as number of doctors
 * Post: patient specified removed from array
-* 
+* Purpose: to remove a patient from a doctor
 */
 void removePatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 {
@@ -267,4 +267,35 @@ void storePatient(Patient patients[], Doctor doctors)
 	ofs.close();
 
 
+}
+
+/*
+* Pre: patients and doctors arrays as well as the number of doctors
+* Post: patient specified has name changed
+* Purpose: To change the name of a patient
+*/
+void updatePatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
+{
+	string patientID;
+	cout << "Enter SSN: ";
+	getline(cin, patientID);
+
+	if (isPatientExist(patients, doctors, numberOfDoctor, patientID))
+	{
+		string name;
+		cout << "Enter new name: ";
+		getline(cin, name);
+
+		int patIndex, docIndex;
+		getPatientIndex(patients, doctors, numberOfDoctor, patientID, patIndex, docIndex);
+		patients[docIndex][patIndex].setName(name);
+		cout << name << " Is set as patient " << patientID << "'s new name" << endl;
+
+		storePatient(patients[docIndex], doctors[docIndex]);
+
+	}
+	else
+	{
+		cout << "Patient not found" << endl;
+	}
 }
