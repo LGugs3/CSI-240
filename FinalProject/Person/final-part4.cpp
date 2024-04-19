@@ -37,8 +37,10 @@ int main()
 	//cout << "patient to remove" << endl;
 	//removePatient(patients, doctors, numDoctors);
 
-	cout << "Remaning a patient" << endl;
-	updatePatient(patients, doctors, numDoctors);
+	//cout << "Remaning a patient" << endl;
+	//updatePatient(patients, doctors, numDoctors);
+
+	patientOperations(patients, doctors, numDoctors);
 
 
 

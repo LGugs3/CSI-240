@@ -1,7 +1,47 @@
 #include "patientOperations.h"
 
+/*
+* Pre: dynamic Patient matrix, doctor array, number of doctors
+* Post: operation executed
+* Purpose: This is an "anchor point" for all other patient operations
+*/
 void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 {
+	cout << "Enter a number to match the request." << endl << endl
+		 << "1. Add Patient" << endl
+		 << "2. Remove Patient" << endl
+		 << "3. Update Patient" << endl
+		 << "4. Search Patient" << endl
+		 << "5. Exit" << endl
+		 << endl
+		 << "Enter Command: ";
+	int ans = 0;
+	string junk;
+	while (!(ans > 0 && ans << 6))
+	{
+		cin >> ans;
+		cin.ignore();
+	}
+
+	switch (ans)
+	{
+		case 1:
+			addPatient(patients, doctors, numberOfDoctor);
+			break;
+		case 2:
+			removePatient(patients, doctors, numberOfDoctor);
+			break;
+		case 3:
+			updatePatient(patients, doctors, numberOfDoctor);
+			break;
+		case 4:
+			searchPatient(patients, doctors, numberOfDoctor);
+			break;
+		case 5:
+			return;
+		default:
+			cerr << "switch statement out of range" << endl;
+	}
 }
 
 /*Pre: dynamic Patient matrix, doctor array, number of doctors
