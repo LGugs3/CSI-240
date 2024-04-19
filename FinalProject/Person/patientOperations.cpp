@@ -42,6 +42,7 @@ void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor
 		default:
 			cerr << "switch statement out of range" << endl;
 	}
+	clearScreen();
 }
 
 /*Pre: dynamic Patient matrix, doctor array, number of doctors

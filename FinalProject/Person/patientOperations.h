@@ -3,6 +3,7 @@
 #define _PATIENTOPERATIONS_H
 
 #include "doctorOperations.h"
+#include "commonOperations.h"
 
 
 

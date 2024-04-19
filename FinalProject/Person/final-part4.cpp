@@ -29,6 +29,8 @@ int main()
 			cout << endl << endl;
 		}
 	}
+	//pause();
+	
 	//cout << "Patient to add:" << endl;
 	//addPatient(patients, doctors, numDoctors);
 
