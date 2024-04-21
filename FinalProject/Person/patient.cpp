@@ -121,7 +121,7 @@ istream& operator>>(istream& input, Patient& obj)
 */
 ostream& operator<<(ostream& output, Patient obj)
 {
-	output << static_cast<Person&>(obj) << obj.mDoctorId << endl;
+	output << static_cast<Person&>(obj) << endl << obj.mDoctorId << endl;
 
 	return output;
 }
