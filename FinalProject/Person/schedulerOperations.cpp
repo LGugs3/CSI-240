@@ -19,6 +19,52 @@ plagiarism checking)
 */
 #include "schedulerOperations.h"
 
+/*Pre: index of doctor's patients to print, scheduler array
+* Post: patient's in doctor's schedule printed to console
+* Purpose: To display <doctorIndex>'s patients to console
+*/
+void displaySchedule(int doctorIndex, Patient***& scheduler)
+{
+	const string WEEKDAY_NAMES[5] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"},
+				 APPOINT_SUFFIX = " Appointment";
+	int i, j,
+		hour, minute;
+
+	for (j = 0; j < NUM_DAYS_IN_WEEK; j++)
+	{
+		cout << WEEKDAY_NAMES[j] + APPOINT_SUFFIX << endl;
+		//reset time
+		hour = 9;
+		minute = 00;
+
+		for (i = 0; i < NUM_TIMESLOTS_IN_DAY; i++)
+		{
+			//setfill() found here: https://cplusplus.com/forum/beginner/13082/
+			cout << hour << ":" << setw(2) << setfill('0') << minute << ": "
+				 << scheduler[doctorIndex][i][j].getName() << endl;
+
+			//update time for next iteration
+			minute += 15;
+			if (minute >= 60)
+			{
+				hour++;
+				minute = 0;
+			}
+			if (hour > 12)
+			{
+				hour = 1;
+			}
+		}
+		//space between last appointment and next day
+		cout << endl;
+	}
+}
+
+/*
+* Pre: scheduler array as reference, doctor array, and number of doctors
+* Post: schedule.txt loaded into scheduler array
+* Purpose: To load data from file to array
+*/
 void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor)
 {
 	ifstream fin;

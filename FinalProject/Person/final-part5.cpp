@@ -83,6 +83,7 @@ int main()//dont run delete statements dont work
 
 
 	loadSchedule(scheduler, doctors, numDoctors);
+	displaySchedule(0, scheduler);
 
 
 

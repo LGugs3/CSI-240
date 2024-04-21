@@ -22,6 +22,7 @@ plagiarism checking)
 #define _SCHEDULEROPERATIONS_H
 
 #include "patientOperations.h"
+#include <iomanip>
 
 const string SCHEDULER_FLIE_NAME = "schedule.txt";
 const int NUM_TIMESLOTS_IN_DAY = 32;
