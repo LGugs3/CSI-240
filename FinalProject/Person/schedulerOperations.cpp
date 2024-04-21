@@ -103,3 +103,45 @@ void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor)
 		}
 	}
 }
+
+/*Pre: scheduler array and number of doctors
+* Post: scheduler data stored in file
+* Purpose: To store data file array to file
+*/
+void storeSchedule(Patient ***& scheduler, int numberOfDoctor)
+{
+	ofstream ofs;
+	//check if file exists already before creating it
+	if (std::filesystem::exists("../../../" + SCHEDULER_FLIE_NAME))
+	{
+		remove(("../../../" + SCHEDULER_FLIE_NAME).c_str());
+	}
+	ofs.open("../../../" + SCHEDULER_FLIE_NAME);
+
+	int i, j, k;
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		for (j = 0; j < NUM_TIMESLOTS_IN_DAY; j++)
+		{
+			for (k = 0; k < NUM_DAYS_IN_WEEK; k++)
+			{
+				ofs << scheduler[i][j][k];
+			}
+		}
+	}
+	ofs.close();
+}
+
+/*Pre: array of doctors, number of doctors and scheduler array
+* Post: all appointments for all doctors printed to console
+* Purpose: To print all appointments to the console
+*/
+void viewSchedule(Doctor doctors[], int numberOfDoctor, Patient***& scheduler)
+{
+	int i;
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		cout << "Doctor: " << doctors[i].getName() << endl;
+		displaySchedule(i, scheduler);
+	}
+}
