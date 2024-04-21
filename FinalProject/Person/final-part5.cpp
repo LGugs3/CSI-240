@@ -24,18 +24,27 @@ int main()//dont run delete statements dont work
 {
 	Patient*** scheduler;
 	Doctor* doctors;
-	loadDoctor(doctors);
+	loadDoctor(doctors);//creating and loading doctors array
 	int numDoctors, i, j, k;
 
+	//getting number of doctors
 	ifstream fin;
 	fin.open("../../../doctors.txt");
 	fin >> numDoctors;
 	fin.close();
 
-
+	//creating patients array and loading array
+	Patient** patients;
+	patients = new Patient * [numDoctors];
+	for (i = 0; i < numDoctors; i++)
+	{
+		loadPatient(patients[i], doctors[i]);
+	}
+	//loading schedule
 	loadSchedule(scheduler, doctors, numDoctors);
 	storeSchedule(scheduler, numDoctors);
-	viewSchedule(doctors, numDoctors, scheduler);
+	//viewSchedule(doctors, numDoctors, scheduler);
+
 
 
 
@@ -56,7 +65,6 @@ int main()//dont run delete statements dont work
 		delete[] scheduler[i];
 	}
 
-	//deletes last dimension
 	delete[] scheduler;
 
 	delete[] doctors;

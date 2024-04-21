@@ -18,9 +18,7 @@ then retain a copy of this assignment on its database for the purpose of future
 plagiarism checking)
 */
 #include "commonOperations.h"
-#include <cstdlib>
-#include <iostream>
-#include <conio.h>
+
 
 /*Pre: none
 * Post: console cleared

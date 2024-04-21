@@ -21,6 +21,10 @@ plagiarism checking)
 #ifndef _COMMONOPERATIONS_H
 #define _COMMONOPERATIONS_H
 
+//#include <cstdlib>
+#include <iostream>
+#include <conio.h>
+
 void clearScreen();
 void pause();
 

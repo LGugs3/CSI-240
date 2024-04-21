@@ -27,13 +27,16 @@ plagiarism checking)
 const string SCHEDULER_FLIE_NAME = "schedule.txt";
 const int NUM_TIMESLOTS_IN_DAY = 32;
 const int NUM_DAYS_IN_WEEK = 5;
+const string WEEKDAY_NAMES[5] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
+			 APPOINT_SUFFIX = " Appointments";
 
-void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor);
+void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 void displaySchedule(int doctorIndex, Patient***& scheduler);
 void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor);
+void printOpenAppsForDoc(Patient***& scheduler, int docIndex);
 void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 int schedulerMenu();
-void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient**& scheduler);
+void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient ***& scheduler);
 void storeSchedule(Patient ***& scheduler, int numberOfDoctor);
 void viewSchedule(Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 
