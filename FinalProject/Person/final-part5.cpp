@@ -25,24 +25,24 @@ int main()//dont run delete statements dont work
 	Patient*** scheduler;
 	Doctor* doctors;
 	loadDoctor(doctors);//creating and loading doctors array
-	int numDoctors, i, j, k;
+	int numberOfDoctor, i, j, k;
 
 	//getting number of doctors
 	ifstream fin;
 	fin.open("../../../doctors.txt");
-	fin >> numDoctors;
+	fin >> numberOfDoctor;
 	fin.close();
 
 	//creating patients array and loading array
 	Patient** patients;
-	patients = new Patient * [numDoctors];
-	for (i = 0; i < numDoctors; i++)
+	patients = new Patient * [numberOfDoctor];
+	for (i = 0; i < numberOfDoctor; i++)
 	{
 		loadPatient(patients[i], doctors[i]);
 	}
 	//loading schedule
-	loadSchedule(scheduler, doctors, numDoctors);
-	storeSchedule(scheduler, numDoctors);
+	loadSchedule(scheduler, doctors, numberOfDoctor);
+	storeSchedule(scheduler, numberOfDoctor);
 	//viewSchedule(doctors, numDoctors, scheduler);
 
 
@@ -51,8 +51,11 @@ int main()//dont run delete statements dont work
 
 
 
+
+
+
 	//deleting dynamic arrays
-	for (i = 0; i < numDoctors; i++)
+	for (i = 0; i < numberOfDoctor; i++)
 	{
 		for (j = 0; j < NUM_TIMESLOTS_IN_DAY; j++)
 		{
@@ -60,7 +63,7 @@ int main()//dont run delete statements dont work
 		}
 	}
 
-	for (i = 0; i < numDoctors; i++)
+	for (i = 0; i < numberOfDoctor; i++)
 	{
 		delete[] scheduler[i];
 	}

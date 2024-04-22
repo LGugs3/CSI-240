@@ -312,7 +312,7 @@ void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoct
 			viewSchedule(doctors, numberOfDoctor, scheduler);
 			break;
 		case 5:
-			//search for patient
+			//search for apointment
 			break;
 		default:
 			cerr << "operation number out of range" << endl;

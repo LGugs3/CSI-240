@@ -150,16 +150,93 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 	}
 }
 
+/*Pre: patients array, doctors array, patient SSN to search, and number of doctors
+* Post: <MAX_CLOSEST> number of entries closest to <partialID> printed to console
+* Purpose: to print full IDs close to the partial given to the console
+*/
+void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string partialID, int numberOfDoctor)
+{
+	const int MAX_CLOSEST = 10;
+	int i, j, k, closeNum = 0;
+	string closestMatches[MAX_CLOSEST], tempStr, patID;
+
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		if (closeNum >= MAX_CLOSEST) { break; }
+		for (j = 0; j < doctors[i].getNumberOfPatient(); j++)
+		{
+			//resetting string
+			tempStr = "";
+			patID = patients[i][j].getId();
+			if (partialID.length() > patID.length())
+			{
+				break;
+			}
+
+			//adding new string
+			for (k = 0; k < partialID.length(); k++)
+			{
+				tempStr += patID[k];
+			}
+
+			if (tempStr == partialID)
+			{
+				closestMatches[closeNum] = patID;
+				closeNum++;
+			}
+
+			if (closeNum >= MAX_CLOSEST) { break; }
+		}
+	}
+
+	for (i = 0; i < MAX_CLOSEST; i++)
+	{
+		if (closestMatches[i] == "") { continue; }
+		std::cout << "           " << closestMatches[i] << endl;
+	}
+
+}
+
 /*Pre: <patients> and <doctors> arrays and number of doctors
 * Post: patient data and doctor name printed to console if it exists
 * Purpose: To get the user the patient's data and the doctor they belong to
 */
 void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 {
+	const int ID_LENGTH = 11;
+	std::cout << "Enter SSN: ";
+	char ch;
 	string patientID;
-	cout << "Enter SSN: ";
-	getline(cin, patientID);
 
+	//adding to search string
+	while ((ch = getch()) != 13)//13 is carriage return on ascii table
+	{
+
+		if (ch == 8)//backspace key
+		{
+			if (patientID.length() == 0) { continue; }
+
+			patientID.erase(patientID.end() - 1);//erases last character
+		}
+		else if (ch == 127)//delete key
+		{
+			continue;
+		}
+		else
+		{
+			if (patientID.length() >= ID_LENGTH) { continue; }//prevents adding characters to make the string longer than possible
+
+			patientID += ch;
+		}
+		system("cls");
+		std::cout << "Enter SSN: " << patientID << endl;
+
+		displayClosePatientMatches(patients, doctors, patientID, numberOfDoctor);
+	}
+	system("cls");
+	cout << "Enter SSN: " << patientID << endl;
+
+	//searching for patient
 	if (isPatientExist(patients, doctors, numberOfDoctor, patientID))
 	{
 		int docIndex, patIndex;
@@ -167,13 +244,13 @@ void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 		//patIndex and docIndex is pass by reference so we get the value that way
 		getPatientIndex(patients, doctors, numberOfDoctor, patientID, patIndex, docIndex);
 
-		cout << endl;
+		std::cout << endl;
 		patients[docIndex][patIndex].display();
-		cout << endl << "Patient belongs to Dr. " << doctors[docIndex].getName() << endl;
+		std::cout << endl << "Patient belongs to Dr. " << doctors[docIndex].getName() << endl;
 	}
 	else
 	{
-		cout << "Patient does not exist in the system" << endl;
+		std::cout << "Patient does not exist in the system" << endl;
 	}
 }
 
