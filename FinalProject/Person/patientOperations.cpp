@@ -228,12 +228,12 @@ void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 
 			patientID += ch;
 		}
-		system("cls");
+		clearScreen();
 		std::cout << "Enter SSN: " << patientID << endl;
 
 		displayClosePatientMatches(patients, doctors, patientID, numberOfDoctor);
 	}
-	system("cls");
+	clearScreen();
 	cout << "Enter SSN: " << patientID << endl;
 
 	//searching for patient

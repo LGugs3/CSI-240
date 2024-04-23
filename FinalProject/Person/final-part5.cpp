@@ -47,7 +47,6 @@ int main()//dont run delete statements dont work
 	
 	//loading schedule
 	loadSchedule(scheduler, doctors, numberOfDoctor);
-	storeSchedule(scheduler, numberOfDoctor);
 	//viewSchedule(doctors, numDoctors, scheduler);
 
 	schedulerOperations(patients, doctors, numberOfDoctor, scheduler);
@@ -60,6 +59,8 @@ int main()//dont run delete statements dont work
 
 
 
+
+	storeSchedule(scheduler, numberOfDoctor);
 
 	//deleting dynamic arrays
 	for (i = 0; i < numberOfDoctor; i++)
