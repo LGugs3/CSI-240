@@ -23,17 +23,21 @@ plagiarism checking)
 
 #include "patient.h"
 #include "doctor.h"
+#include "commonOperations.h"
 #include <filesystem>
 #include <sstream>
+#include <conio.h>
+
 
 
 const string DOCTOR_FILE_NAME = "../../../doctors.txt";
 
 
-
+void displayClosestDoctors(Doctor doctors[], string partialName, int numberOfDoctor);
 int getDoctorIndex(Doctor doctors[], int numberOfDoctor, string doctorName);
 bool isDoctorExist(Doctor doctors[], int numberOfDoctor, string doctorName);
 int loadDoctor(Doctor*& doctors);
+string searchDoctor(Doctor doctors[], int numberOfDoctor);
 void storeDoctor(Doctor doctors[], int numberOfDoctor);
 
 

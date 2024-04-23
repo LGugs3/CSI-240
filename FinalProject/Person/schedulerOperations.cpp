@@ -27,49 +27,19 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 {
 	//get doctor name and check if exists
 	string docName;
-	cout << "Enter doctor name to add appointment under: ";
-	getline(cin, docName);
-	
-	bool docFound = false;
 	int i, docIndex;
-	for (i = 0; i < numberOfDoctor; i++)
-	{
-		if (doctors[i].getName() == docName)
-		{
-			docFound = true;
-			docIndex = i;
-			break;
-		}
-	}
+	docName = searchDoctor(doctors, numberOfDoctor);
+	docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
 
-	if (!docFound)
-	{
-		cout << "Doctor name not found" << endl;
-		return;
-	}
 
 	//Get patient name and check if exists
-	bool patFound = false;
-	string patName;
+	string patName, patID;
 	int patIndex;
-	cout << "Enter patient name: ";
-	getline(cin, patName);
+	patID = searchPatient(patients, doctors, numberOfDoctor);
+	getPatientIndex(patients, doctors, numberOfDoctor, patID, patIndex, docIndex);
+	patName = patients[docIndex][patIndex].getName();
+	
 
-	for (i = 0; i < doctors[docIndex].getNumberOfPatient(); i++)
-	{
-		if (patients[docIndex][i].getName() == patName)
-		{
-			patIndex = i;
-			patFound = true;
-			break;
-		}
-	}
-
-	if (!patFound)
-	{
-		cout << "Patient name not found" << endl;
-		return;
-	}
 
 	//if all appointments are filled for the week
 	if (printOpenAppsForDoc(scheduler, docIndex) == 0)
@@ -340,49 +310,17 @@ void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor
 {
 	//get doctor name and check if exists
 	string docName;
-	cout << "Enter doctor name that patient belongs to: ";
-	getline(cin, docName);
-
-	bool docFound = false;
 	int i, docIndex;
-	for (i = 0; i < numberOfDoctor; i++)
-	{
-		if (doctors[i].getName() == docName)
-		{
-			docFound = true;
-			docIndex = i;
-			break;
-		}
-	}
+	docName = searchDoctor(doctors, numberOfDoctor);
+	docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
 
-	if (!docFound)
-	{
-		cout << "Doctor name not found" << endl;
-		return;
-	}
 
 	//Get patient name and check if exists
-	bool patFound = false;
-	string patName;
+	string patName, patID;
 	int patIndex;
-	cout << "Enter patient name: ";
-	getline(cin, patName);
-
-	for (i = 0; i < doctors[docIndex].getNumberOfPatient(); i++)
-	{
-		if (patients[docIndex][i].getName() == patName)
-		{
-			patIndex = i;
-			patFound = true;
-			break;
-		}
-	}
-
-	if (!patFound)
-	{
-		cout << "Patient name not found" << endl;
-		return;
-	}
+	patID = searchPatient(patients, doctors, numberOfDoctor);
+	getPatientIndex(patients, doctors, numberOfDoctor, patID, patIndex, docIndex);
+	patName = patients[docIndex][patIndex].getName();
 
 	displayPatientAppointments(scheduler, patName, docIndex);
 

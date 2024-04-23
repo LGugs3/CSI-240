@@ -20,6 +20,44 @@ plagiarism checking)
 
 #include "doctorOperations.h"
 
+void displayClosestDoctors(Doctor doctors[], string partialName, int numberOfDoctor)
+{
+    const int MAX_CLOSEST = 3;
+    int i, j, closeNum = 0;
+    string closestMatches[MAX_CLOSEST], tempStr, docName;
+
+    for (i = 0; i < numberOfDoctor; i++)
+    {
+        if (closeNum >= MAX_CLOSEST) { break; }
+
+        //resetting string
+        tempStr = "";
+        docName = doctors[i].getName();
+        if (partialName.length() > docName.length()) { break; }
+
+        //adding new name
+        for (j = 0; j < partialName.length(); j++)
+        {
+            tempStr += docName[j];
+        }
+
+        //checking for match
+        if (tempStr == partialName)
+        {
+            closestMatches[closeNum] = docName;
+            closeNum++;
+        }
+        if (closeNum >= MAX_CLOSEST) { break; }
+    }
+
+    //printing closest to console
+    for (i = 0; i < MAX_CLOSEST; i++)
+    {
+        if (closestMatches[i] == "") { continue; }
+        cout << closestMatches[i] << endl;
+    }
+}
+
 /*Pre: array contains all the doctors, the number of doctors in the mentioned array, and the name to find
 * Post: index of doctor name in array
 * Purpose: To get the index of a specific doctor in the array
@@ -93,6 +131,50 @@ int loadDoctor(Doctor*& doctors)
     }
     fin.close();
     return 0;
+}
+
+string searchDoctor(Doctor doctors[], int numberOfDoctor)
+{
+    cout << "Enter Name: ";
+    char ch;
+    string docName;
+
+    //adding search string
+    while ((ch = getch()) != 13)
+    {
+        if (ch == 8)//backspace key
+        {
+            if (docName.length() == 0) { continue; }
+
+            docName.erase(docName.end() - 1);//erases last character
+        }
+        else if (ch == 127)//delete key
+        {
+            continue;
+        }
+        else
+        {
+            docName += ch;
+        }
+        clearScreen();
+        std::cout << "Enter SSN: " << docName << endl;
+
+        displayClosestDoctors(doctors, docName, numberOfDoctor);
+    }
+    clearScreen();
+    cout << "Enter Doctor Name: " << docName << endl;
+
+    //searching for doctor
+    if (isDoctorExist(doctors, numberOfDoctor, docName))
+    {
+        return docName;
+    }
+    else
+    {
+        return "empty";
+    }
+
+
 }
 
 /*Pre: array of doctors, number of doctors in array

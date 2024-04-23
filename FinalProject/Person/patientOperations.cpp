@@ -198,10 +198,10 @@ void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string pa
 }
 
 /*Pre: <patients> and <doctors> arrays and number of doctors
-* Post: patient data and doctor name printed to console if it exists
+* Post: patient data and doctor name printed to console if it exists. Returns id of patient
 * Purpose: To get the user the patient's data and the doctor they belong to
 */
-void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
+string searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 {
 	const int ID_LENGTH = 11;
 	std::cout << "Enter SSN: ";
@@ -247,10 +247,12 @@ void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 		std::cout << endl;
 		patients[docIndex][patIndex].display();
 		std::cout << endl << "Patient belongs to Dr. " << doctors[docIndex].getName() << endl;
+		return patients[docIndex][patIndex].getId();
 	}
 	else
 	{
 		std::cout << "Patient does not exist in the system" << endl;
+		return "";
 	}
 }
 

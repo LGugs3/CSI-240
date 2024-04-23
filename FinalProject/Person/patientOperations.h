@@ -29,7 +29,7 @@ plagiarism checking)
 void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor);
 void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor);
 void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string str, int numberOfDoctor);
-void searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor);
+string searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor);
 void getPatientIndex(Patient** patients, Doctor doctors[], int numberOfDoctor, string id, int& patientIndex, int& doctorIndex);
 bool isPatientExist(Patient** patients, Doctor doctors[], int numberOfDoctor, string id);
 void loadPatient(Patient*& patients, Doctor doctor);
