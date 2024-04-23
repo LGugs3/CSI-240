@@ -1,8 +1,8 @@
-000-00-0002
-pat 2
-addr 2
-200 000 0000
-111-11-1111
+empty
+empty
+empty
+empty
+empty
 000-00-0001
 pat 1
 addr 1
@@ -798,11 +798,11 @@ pat 1
 addr 1
 100 000 0000
 111-11-1112
-000-00-0002
-pat 2
-addr 2
-200 000 0000
-111-11-1111
+empty
+empty
+empty
+empty
+empty
 000-00-0002
 pat 2
 addr 2

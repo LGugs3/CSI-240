@@ -209,6 +209,40 @@ void displaySchedule(int doctorIndex, Patient***& scheduler)
 	}
 }
 
+void displayPatientAppointments(Patient***& scheduler, string patientName, int doctorIndex)
+{
+	int i, j, hr, min;
+
+	for (j = 0; j < NUM_DAYS_IN_WEEK; j++)
+	{
+		cout << WEEKDAY_NAMES[j] + APPOINT_SUFFIX << endl;
+		//reset time
+		hr = 9;
+		min = 00;
+
+		for (i = 0; i < NUM_TIMESLOTS_IN_DAY; i++)
+		{
+			if (scheduler[doctorIndex][i][j].getName() == patientName)
+			{
+				cout << hr << ":" << setw(2) << setfill('0') << min << endl;
+			}
+
+			//update time for next iteration
+			min += 15;
+			if (min >= 60)
+			{
+				hr++;
+				min = 0;
+			}
+			if (hr > 12)
+			{
+				hr = 1;
+			}
+		}
+		cout << endl;
+	}
+}
+
 /*
 * Pre: scheduler array as reference, doctor array, and number of doctors
 * Post: schedule.txt loaded into scheduler array
@@ -298,8 +332,171 @@ int printOpenAppsForDoc(Patient***& scheduler, int docIndex)
 	return daysAvail;
 }
 
+/*Pre: patients array, array of doctors, number of doctors, and scheduler array
+* Post: appointment specified is removed
+* Purpose: To remove appointments specified by user
+*/
 void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler)
 {
+	//get doctor name and check if exists
+	string docName;
+	cout << "Enter doctor name that patient belongs to: ";
+	getline(cin, docName);
+
+	bool docFound = false;
+	int i, docIndex;
+	for (i = 0; i < numberOfDoctor; i++)
+	{
+		if (doctors[i].getName() == docName)
+		{
+			docFound = true;
+			docIndex = i;
+			break;
+		}
+	}
+
+	if (!docFound)
+	{
+		cout << "Doctor name not found" << endl;
+		return;
+	}
+
+	//Get patient name and check if exists
+	bool patFound = false;
+	string patName;
+	int patIndex;
+	cout << "Enter patient name: ";
+	getline(cin, patName);
+
+	for (i = 0; i < doctors[docIndex].getNumberOfPatient(); i++)
+	{
+		if (patients[docIndex][i].getName() == patName)
+		{
+			patIndex = i;
+			patFound = true;
+			break;
+		}
+	}
+
+	if (!patFound)
+	{
+		cout << "Patient name not found" << endl;
+		return;
+	}
+
+	displayPatientAppointments(scheduler, patName, docIndex);
+
+	
+	string day;
+	int dayIndex = -1;
+	cout << "Enter Day for new Appointment: ";
+	getline(cin, day);
+
+	for (i = 0; i < 5; i++)
+	{
+		if (WEEKDAY_NAMES[i] == day)
+		{
+			dayIndex = i;
+			break;
+		}
+	}
+
+	if (dayIndex == -1)
+	{
+		cout << "Day not found" << endl;
+		return;
+	}
+
+	//enter new appointment time
+	int hr = 0, min = 1;
+	cout << "Enter hour for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (hr == 0)
+		{
+			cin >> hr;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> hr;
+		cin.ignore();
+	}
+
+	cout << "Enter minute for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (min == 1)
+		{
+			cin >> min;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> min;
+		cin.ignore();
+	}
+
+
+	//if app avail
+	if (min % 15 != 0)
+	{
+		cout << "Appointment time is not available" << endl;
+	}
+	else
+	{
+		Patient emptyPatient = Patient("empty", "empty", "empty", "empty", "empty");
+		int index;
+
+		min %= 15;
+		if (hr < 5) // hrs 1 - 4
+		{
+			hr += 4;
+
+			index = (hr * 4) - 4 + min;
+			if (index > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
+			if (scheduler[docIndex][index][dayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				return;
+			}
+
+			scheduler[docIndex][index][dayIndex] = emptyPatient;
+		}
+		else //hrs 9 - 12
+		{
+			hr -= 9;
+
+			index = (hr * 4) + min;
+
+			if (index > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
+			if (scheduler[docIndex][index][dayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				return;
+			}
+
+			scheduler[docIndex][index][dayIndex] = emptyPatient;
+		}
+
+		cout << "Appointment removed" << endl;
+	}
+
+
 
 }
 
