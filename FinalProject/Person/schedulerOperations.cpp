@@ -55,11 +55,12 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 	cout << "Enter patient name: ";
 	getline(cin, patName);
 
-	for (i = 0; i < doctors->getNumberOfPatient(); i++)
+	for (i = 0; i < doctors[docIndex].getNumberOfPatient(); i++)
 	{
 		if (patients[docIndex][i].getName() == patName)
 		{
 			patIndex = i;
+			patFound = true;
 			break;
 		}
 	}
@@ -70,7 +71,12 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 		return;
 	}
 
-	printOpenAppsForDoc(scheduler, docIndex);
+	//if all appointments are filled for the week
+	if (printOpenAppsForDoc(scheduler, docIndex) == 0)
+	{
+		cout << "All appointments for the week are full." << endl;
+		return;
+	}
 
 	string day;
 	int dayIndex = -1;
@@ -93,30 +99,41 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 	}
 
 	//enter new appointment time
-	int hr, min;
+	int hr = 0, min = 1;
 	cout << "Enter hour for appointment: ";
 	if (!isdigit(cin.peek()))
 	{
 		cout << "not a number" << endl;
+		while (hr == 0)
+		{
+			cin >> hr;
+			cin.ignore();
+		}
 	}
 	else
 	{
 		cin >> hr;
+		cin.ignore();
 	}
 
 	cout << "Enter minute for appointment: ";
 	if (!isdigit(cin.peek()))
 	{
 		cout << "not a number" << endl;
+		while (min == 1)
+		{
+			cin >> min;
+			cin.ignore();
+		}
 	}
 	else
 	{
 		cin >> min;
+		cin.ignore();
 	}
 
 
 	//if app avail
-
 	if (min % 15 != 0)
 	{
 		cout << "Appointment time is not available" << endl;
@@ -128,14 +145,28 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 		{
 			hr += 4;
 
+			if (((hr * 4) - 4 + min) > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
 			scheduler[docIndex][(hr * 4) - 4 + min][dayIndex] = patients[docIndex][patIndex];
 		}
 		else //hrs 9 - 12
 		{
 			hr -= 9;
 
+			if (((hr * 4) + min) > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
 			scheduler[docIndex][(hr * 4) + min][dayIndex] = patients[docIndex][patIndex];
 		}
+
+		cout << "Appointment set" << endl;
 	}
 }
 
@@ -226,9 +257,9 @@ void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor)
 * Post: all open appointments for doctor at <docIndex> printed to console]
 * Purpose: To print all available appointments for <docIndex> to console
 */
-void printOpenAppsForDoc(Patient***& scheduler, int docIndex)
+int printOpenAppsForDoc(Patient***& scheduler, int docIndex)
 {
-	int i, j, hour, min, appAvail;
+	int i, j, hour, min, appAvail, daysAvail = 5;
 	cout << "Appointments available:" << endl;
 	for (i = 0; i < NUM_DAYS_IN_WEEK; i++)
 	{
@@ -260,9 +291,11 @@ void printOpenAppsForDoc(Patient***& scheduler, int docIndex)
 		if (appAvail == 0)
 		{
 			cout << "All appointments for this day are filled" << endl;
+			daysAvail--;
 		}
 		cout << endl;//spacing between days
 	}
+	return daysAvail;
 }
 
 void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler)
@@ -284,10 +317,12 @@ int schedulerMenu()
 		 << "4. Display Appointments" << endl
 		 << "5. Find Appointment"
 		 << endl;
-	while (ans > 0 && ans < 6)
+
+	while (!(ans > 0 && ans < 6))
 	{
 		cout << "Enter number: ";
 		cin >> ans;
+		cin.ignore();
 	}
 	return ans;
 }
@@ -300,7 +335,7 @@ void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoct
 	switch (opNum)
 	{
 		case 1:
-			addPatient(patients, doctors, numberOfDoctor);
+			addAppointment(patients, doctors, numberOfDoctor, scheduler);
 			break;
 		case 2:
 			removeAppointment(patients, doctors, numberOfDoctor, scheduler);
