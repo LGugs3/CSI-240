@@ -22,7 +22,7 @@ plagiarism checking)
 
 void displayClosestDoctors(Doctor doctors[], string partialName, int numberOfDoctor)
 {
-    const int MAX_CLOSEST = 3;
+    const int MAX_CLOSEST = 10;
     int i, j, closeNum = 0;
     string closestMatches[MAX_CLOSEST], tempStr, docName;
 
@@ -135,7 +135,7 @@ int loadDoctor(Doctor*& doctors)
 
 string searchDoctor(Doctor doctors[], int numberOfDoctor)
 {
-    cout << "Enter Name: ";
+    cout << "Enter Doctor Name: ";
     char ch;
     string docName;
 
@@ -157,7 +157,7 @@ string searchDoctor(Doctor doctors[], int numberOfDoctor)
             docName += ch;
         }
         clearScreen();
-        std::cout << "Enter SSN: " << docName << endl;
+        std::cout << "Enter Doctor Name: " << docName << endl;
 
         displayClosestDoctors(doctors, docName, numberOfDoctor);
     }

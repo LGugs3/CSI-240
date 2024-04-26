@@ -32,8 +32,9 @@ const string WEEKDAY_NAMES[5] = { "Monday", "Tuesday", "Wednesday", "Thursday", 
 
 void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 void displaySchedule(int doctorIndex, Patient***& scheduler);
-void displayPatientAppointments(Patient***& scheduler, string patientName, int doctorIndex);
+int displayPatientAppointments(Patient***& scheduler, string patientName, int doctorIndex);
 void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor);
+void modifyAppointment(Patient***& scheduler, Patient**& patients, Doctor doctors[], int numberOfDoctor);
 int printOpenAppsForDoc(Patient***& scheduler, int docIndex);
 void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 int schedulerMenu();

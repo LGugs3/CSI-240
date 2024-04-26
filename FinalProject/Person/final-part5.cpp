@@ -40,11 +40,7 @@ int main()//dont run delete statements dont work
 	{
 		loadPatient(patients[i], doctors[i]);
 	}
-	
-	
-	
-	
-	
+
 	//loading schedule
 	loadSchedule(scheduler, doctors, numberOfDoctor);
 	//viewSchedule(doctors, numDoctors, scheduler);

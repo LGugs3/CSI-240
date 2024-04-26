@@ -29,6 +29,11 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 	string docName;
 	int i, docIndex;
 	docName = searchDoctor(doctors, numberOfDoctor);
+	if (docName == "empty")
+	{
+		cout << "Doctor does not exist" << endl;
+		return;
+	}
 	docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
 
 
@@ -37,8 +42,15 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 	int patIndex;
 	patID = searchPatient(patients, doctors, numberOfDoctor);
 	getPatientIndex(patients, doctors, numberOfDoctor, patID, patIndex, docIndex);
-	patName = patients[docIndex][patIndex].getName();
-	
+	if (isPatientExist(patients, doctors, numberOfDoctor, patID))
+	{
+		patName = patients[docIndex][patIndex].getName();
+
+	}
+	else
+	{
+		return;
+	}
 
 
 	//if all appointments are filled for the week
@@ -110,30 +122,56 @@ void addAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, P
 	}
 	else
 	{
-		min %= 15;
-		if (hr < 5) // hrs 1 - 4
+		int index;
+
+		min /= 15;
+		if (min < 0 && min > 3)
+		{
+			cout << "Minute time not available" << endl;
+			return;
+		}
+
+		if (hr < 5 && hr > 0) // hrs 1 - 4
 		{
 			hr += 4;
+			index = (hr * 4) - 4 + min;
 
-			if (((hr * 4) - 4 + min) > NUM_TIMESLOTS_IN_DAY)
+			if (index > NUM_TIMESLOTS_IN_DAY)
 			{
 				cout << "Time slot unavailable" << endl;
 				return;
 			}
+			if (scheduler[docIndex][index][dayIndex].getName() != "empty")
+			{
+				cout << "Appointment time is already filled" << endl;
+				return;
+			}
 
-			scheduler[docIndex][(hr * 4) - 4 + min][dayIndex] = patients[docIndex][patIndex];
+			scheduler[docIndex][index][dayIndex] = patients[docIndex][patIndex];
 		}
 		else //hrs 9 - 12
 		{
-			hr -= 9;
+			if (hr > 12)
+			{
+				cout << "Hour not available" << endl;
+				return;
+			}
 
-			if (((hr * 4) + min) > NUM_TIMESLOTS_IN_DAY)
+			hr -= 9;
+			index = (hr * 4) + min;
+
+			if (index > NUM_TIMESLOTS_IN_DAY)
 			{
 				cout << "Time slot unavailable" << endl;
 				return;
 			}
+			if (scheduler[docIndex][index][dayIndex].getName() != "empty")
+			{
+				cout << "Appointment time is already filled" << endl;
+				return;
+			}
 
-			scheduler[docIndex][(hr * 4) + min][dayIndex] = patients[docIndex][patIndex];
+			scheduler[docIndex][index][dayIndex] = patients[docIndex][patIndex];
 		}
 
 		cout << "Appointment set" << endl;
@@ -179,9 +217,13 @@ void displaySchedule(int doctorIndex, Patient***& scheduler)
 	}
 }
 
-void displayPatientAppointments(Patient***& scheduler, string patientName, int doctorIndex)
+/*Pre: scheduler array, patient name, doctor index
+* Post: all appointments for patient printed to console
+* Purpose: To print patient appointments to console
+*/
+int displayPatientAppointments(Patient***& scheduler, string patientName, int doctorIndex)
 {
-	int i, j, hr, min;
+	int i, j, hr, min, daysAvail = NUM_DAYS_IN_WEEK, appsAvail;
 
 	for (j = 0; j < NUM_DAYS_IN_WEEK; j++)
 	{
@@ -189,12 +231,14 @@ void displayPatientAppointments(Patient***& scheduler, string patientName, int d
 		//reset time
 		hr = 9;
 		min = 00;
+		appsAvail = 0;
 
 		for (i = 0; i < NUM_TIMESLOTS_IN_DAY; i++)
 		{
 			if (scheduler[doctorIndex][i][j].getName() == patientName)
 			{
 				cout << hr << ":" << setw(2) << setfill('0') << min << endl;
+				appsAvail++;
 			}
 
 			//update time for next iteration
@@ -210,7 +254,12 @@ void displayPatientAppointments(Patient***& scheduler, string patientName, int d
 			}
 		}
 		cout << endl;
+		if (appsAvail == 0)
+		{
+			daysAvail--;
+		}
 	}
+	return daysAvail;
 }
 
 /*
@@ -255,6 +304,276 @@ void loadSchedule(Patient***& scheduler, Doctor doctor[], int numberOfDoctor)
 			}
 		}
 	}
+}
+
+void modifyAppointment(Patient***& scheduler, Patient**& patients, Doctor doctors[], int numberOfDoctor)
+{
+	//get doctor name
+	string docName;
+	int docIndex;
+
+	docName = searchDoctor(doctors, numberOfDoctor);
+	if (docName == "empty")
+	{
+		cout << "Doctor does not exist" << endl;
+		return;
+	}
+	docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
+
+	//getting patient name
+	string patName, patID;
+	int patIndex;
+
+	patID = searchPatient(patients, doctors, numberOfDoctor);
+	getPatientIndex(patients, doctors, numberOfDoctor, patID, patIndex, docIndex);
+	if (isPatientExist(patients, doctors, numberOfDoctor, patID))
+	{
+		patName = patients[docIndex][patIndex].getName();
+
+	}
+	else
+	{
+		return;
+	}
+
+	if (displayPatientAppointments(scheduler, patName, docIndex) == 0)
+	{
+		cout << "Patient does not have any appointments" << endl;
+		return;
+	}
+
+
+	/*****************************************************************************************************************
+	old appointment
+	******************************************************************************************************************/
+	string day;
+	int oldDayIndex = -1, i, oldIndex;
+	cout << "Enter appointment to move:" << endl << "Enter Day for new Appointment: ";
+	getline(cin, day);
+
+	for (i = 0; i < 5; i++)
+	{
+		if (WEEKDAY_NAMES[i] == day)
+		{
+			oldDayIndex = i;
+			break;
+		}
+	}
+
+	if (oldDayIndex == -1)
+	{
+		cout << "Day not found" << endl;
+		return;
+	}
+
+	//enter new appointment time
+	int hr = 0, min = 1;
+	cout << "Enter hour for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (hr == 0)
+		{
+			cin >> hr;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> hr;
+		cin.ignore();
+	}
+
+	cout << "Enter minute for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (min == 1)
+		{
+			cin >> min;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> min;
+		cin.ignore();
+	}
+
+
+	//if app avail
+	if (min % 15 != 0)
+	{
+		cout << "Appointment time is not available" << endl;
+	}
+	else
+	{
+		Patient emptyPatient = Patient("empty", "empty", "empty", "empty", "empty");
+
+		min /= 15;
+		if (hr < 5) // hrs 1 - 4
+		{
+			hr += 4;
+
+			oldIndex = (hr * 4) - 4 + min;
+			if (oldIndex > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
+			if (scheduler[docIndex][oldIndex][oldDayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				return;
+			}
+
+			scheduler[docIndex][oldIndex][oldDayIndex] = emptyPatient;
+		}
+		else //hrs 9 - 12
+		{
+			hr -= 9;
+
+			oldIndex = (hr * 4) + min;
+
+			if (oldIndex > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				return;
+			}
+
+			if (scheduler[docIndex][oldIndex][oldDayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				return;
+			}
+
+			scheduler[docIndex][oldIndex][oldDayIndex] = emptyPatient;
+		}
+	}
+
+	/*****************************************************************************************************************
+	new appointment
+	******************************************************************************************************************/
+	int newDayIndex = -1;
+	cout << "Enter new Appointment time:" << endl << "Enter Day for new Appointment: ";
+	getline(cin, day);
+
+	for (i = 0; i < NUM_DAYS_IN_WEEK; i++)
+	{
+		if (WEEKDAY_NAMES[i] == day)
+		{
+			newDayIndex = i;
+			break;
+		}
+	}
+
+	if (newDayIndex == -1)
+	{
+		cout << "Day not found" << endl;
+		//resetting old appointment before exit
+		scheduler[docIndex][oldIndex][oldDayIndex] = patients[docIndex][patIndex];
+		return;
+	}
+
+	//enter new appointment time
+	hr = 0, min = 1;
+	cout << "Enter hour for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (hr == 0)
+		{
+			cin >> hr;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> hr;
+		cin.ignore();
+	}
+
+	cout << "Enter minute for appointment: ";
+	if (!isdigit(cin.peek()))
+	{
+		cout << "not a number" << endl;
+		while (min == 1)
+		{
+			cin >> min;
+			cin.ignore();
+		}
+	}
+	else
+	{
+		cin >> min;
+		cin.ignore();
+	}
+
+
+	//if app avail
+	if (min % 15 != 0)
+	{
+		cout << "Appointment time is not available" << endl;
+	}
+	else
+	{
+		int newIndex;
+		Patient emptyPatient = Patient("empty", "empty", "empty", "empty", "empty");
+
+		min /= 15;
+		if (hr < 5) // hrs 1 - 4
+		{
+			hr += 4;
+
+			newIndex = (hr * 4) - 4 + min;
+			if (newIndex > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				//resetting old appointment before exit
+				scheduler[docIndex][oldIndex][oldDayIndex] = patients[docIndex][patIndex];
+				return;
+			}
+
+			if (scheduler[docIndex][newIndex][newDayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				//resetting old appointment before exit
+				scheduler[docIndex][oldIndex][oldDayIndex] = patients[docIndex][patIndex];
+				return;
+			}
+
+			scheduler[docIndex][newIndex][newDayIndex] = emptyPatient;
+		}
+		else //hrs 9 - 12
+		{
+			hr -= 9;
+
+			newIndex = (hr * 4) + min;
+
+			if (newIndex > NUM_TIMESLOTS_IN_DAY)
+			{
+				cout << "Time slot unavailable" << endl;
+				//resetting old appointment before exit
+				scheduler[docIndex][oldIndex][oldDayIndex] = patients[docIndex][patIndex];
+				return;
+			}
+
+			if (scheduler[docIndex][newIndex][newDayIndex] != patients[docIndex][patIndex])
+			{
+				cout << "Appointment you are attempting to delete does not belong to " << patName << endl;
+				//resetting old appointment before exit
+				scheduler[docIndex][oldIndex][oldDayIndex] = patients[docIndex][patIndex];
+				return;
+			}
+
+			scheduler[docIndex][newIndex][newDayIndex] = emptyPatient;
+		}
+
+		cout << "Patient moved successfully" << endl;
+	}
+
+
 }
 
 /*Pre: scheduler array and doctor index to print
@@ -312,6 +631,11 @@ void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor
 	string docName;
 	int i, docIndex;
 	docName = searchDoctor(doctors, numberOfDoctor);
+	if (docName == "empty")
+	{
+		cout << "Doctor does not exist" << endl;
+		return;
+	}
 	docIndex = getDoctorIndex(doctors, numberOfDoctor, docName);
 
 
@@ -322,7 +646,12 @@ void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor
 	getPatientIndex(patients, doctors, numberOfDoctor, patID, patIndex, docIndex);
 	patName = patients[docIndex][patIndex].getName();
 
-	displayPatientAppointments(scheduler, patName, docIndex);
+	//checks to make sure there is at least one appointment to delete
+	if (displayPatientAppointments(scheduler, patName, docIndex) == 0)
+	{
+		cout << "This patient has no appointments scheduled" << endl;
+		return;
+	}
 
 	
 	string day;
@@ -390,7 +719,7 @@ void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor
 		Patient emptyPatient = Patient("empty", "empty", "empty", "empty", "empty");
 		int index;
 
-		min %= 15;
+		min /= 15;
 		if (hr < 5) // hrs 1 - 4
 		{
 			hr += 4;
@@ -434,8 +763,6 @@ void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor
 		cout << "Appointment removed" << endl;
 	}
 
-
-
 }
 
 /*Pre: none
@@ -476,7 +803,7 @@ void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoct
 			removeAppointment(patients, doctors, numberOfDoctor, scheduler);
 			break;
 		case 3:
-			//modify appointment
+			modifyAppointment(scheduler, patients, doctors, numberOfDoctor);
 			break;
 		case 4:
 			viewSchedule(doctors, numberOfDoctor, scheduler);
