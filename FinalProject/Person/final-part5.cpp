@@ -22,10 +22,22 @@ plagiarism checking)
 
 int main()//dont run delete statements dont work
 {
+	//login here
+	User users;
+	const string USER_FILE_NAME = "users.txt";
+	users.loadData("../../../" + USER_FILE_NAME);
+	if (!users.login())
+	{
+		return 0;
+	}
+
+
+	
+	bool isLoggedIn = true;
 	Patient*** scheduler;
 	Doctor* doctors;
 	loadDoctor(doctors);//creating and loading doctors array
-	int numberOfDoctor, i, j, k;
+	int numberOfDoctor, i, j;
 
 	//getting number of doctors
 	ifstream fin;
@@ -43,7 +55,10 @@ int main()//dont run delete statements dont work
 
 	//loading schedule
 	loadSchedule(scheduler, doctors, numberOfDoctor);
-	schedulerOperations(patients, doctors, numberOfDoctor, scheduler);
+	while(isLoggedIn)
+	{
+		schedulerOperations(patients, doctors, numberOfDoctor, scheduler, users, isLoggedIn);
+	}
 
 
 
@@ -55,6 +70,7 @@ int main()//dont run delete statements dont work
 
 
 	storeSchedule(scheduler, numberOfDoctor);
+	users.storeData("../../../" + USER_FILE_NAME);
 
 	//deleting dynamic arrays
 	for (i = 0; i < numberOfDoctor; i++)

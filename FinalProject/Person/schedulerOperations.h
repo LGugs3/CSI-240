@@ -22,6 +22,7 @@ plagiarism checking)
 #define _SCHEDULEROPERATIONS_H
 
 #include "patientOperations.h"
+#include "loginOperations.h"
 #include <iomanip>
 
 const string SCHEDULER_FLIE_NAME = "schedule.txt";
@@ -38,7 +39,7 @@ void modifyAppointment(Patient***& scheduler, Patient**& patients, Doctor doctor
 int printOpenAppsForDoc(Patient***& scheduler, int docIndex);
 void removeAppointment(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler);
 int schedulerMenu();
-void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient ***& scheduler);
+void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient***& scheduler, User& users, bool& isLoggedIn);
 void searchForAppointment(Patient ***& scheduler, Patient**& patients, Doctor doctors[], int numberOfDoctor);
 void storeSchedule(Patient ***& scheduler, int numberOfDoctor);
 void viewSchedule(Doctor doctors[], int numberOfDoctor, Patient***& scheduler);

@@ -781,10 +781,12 @@ int schedulerMenu()
 		 << "2. Delete Appointment" << endl
 		 << "3. Modify Appointment" << endl
 		 << "4. Display Appointments" << endl
-		 << "5. Find Appointment"
+		 << "5. Find Appointment" << endl
+		 << "6. Users Menu" << endl
+		 << "7. Logout"
 		 << endl;
 
-	while (!(ans > 0 && ans < 6))
+	while (!(ans > 0 && ans < 8))
 	{
 		cout << "Enter number: ";
 		cin >> ans;
@@ -797,7 +799,7 @@ int schedulerMenu()
 * Post: fxn user inputted is ran
 * Purpose: Holds all possible scheduler fxns user can use and makes user choose which to run
 */
-void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient ***& scheduler)
+void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor, Patient ***& scheduler, User& users, bool& isLoggedIn)
 {
 	int opNum;
 	opNum = schedulerMenu();
@@ -820,7 +822,10 @@ void schedulerOperations(Patient**& patients, Doctor doctors[], int numberOfDoct
 			searchForAppointment(scheduler, patients, doctors, numberOfDoctor);
 			break;
 		case 6:
-			//logout
+			loginOperations(users);
+			break;
+		case 7:
+			isLoggedIn = false;
 			break;
 		default:
 			cerr << "operation number out of range" << endl;
