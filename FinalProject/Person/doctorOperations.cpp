@@ -133,6 +133,10 @@ int loadDoctor(Doctor*& doctors)
     return 0;
 }
 
+/*Pre: doctor array and number of doctor
+* Post: name of doctor
+* Purpose: to get the name of a doctor
+*/
 string searchDoctor(Doctor doctors[], int numberOfDoctor)
 {
     cout << "Enter Doctor Name: ";

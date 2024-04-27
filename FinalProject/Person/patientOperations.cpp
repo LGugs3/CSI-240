@@ -27,7 +27,7 @@ plagiarism checking)
 */
 void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 {
-	cout << "Enter a number to match the request." << endl << endl
+	std::cout << "Enter a number to match the request." << endl << endl
 		 << "1. Add Patient" << endl
 		 << "2. Remove Patient" << endl
 		 << "3. Update Patient" << endl
@@ -43,6 +43,7 @@ void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor
 		cin.ignore();
 	}
 
+	string docName;
 	switch (ans)
 	{
 		case 1:
@@ -55,7 +56,13 @@ void patientOperations(Patient**& patients, Doctor doctors[], int numberOfDoctor
 			updatePatient(patients, doctors, numberOfDoctor);
 			break;
 		case 4:
-			searchPatient(patients, doctors, numberOfDoctor);
+			docName = searchDoctor(doctors, numberOfDoctor);
+			if (docName == "empty")
+			{
+				cout << "Doctor does not exist" << endl;
+				return;
+			}
+			searchPatient(patients, doctors, numberOfDoctor, getDoctorIndex(doctors, numberOfDoctor, docName));
 			break;
 		case 5:
 			return;
@@ -154,41 +161,40 @@ void addPatient(Patient**& patients, Doctor doctors[], int numberOfDoctor)
 * Post: <MAX_CLOSEST> number of entries closest to <partialID> printed to console
 * Purpose: to print full IDs close to the partial given to the console
 */
-void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string partialID, int numberOfDoctor)
+void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string partialID, int numberOfDoctor, int docIndex)
 {
 	const int MAX_CLOSEST = 10;
 	int i, j, k, closeNum = 0;
 	string closestMatches[MAX_CLOSEST], tempStr, patID;
 
-	for (i = 0; i < numberOfDoctor; i++)
+	for (i = 0; i < doctors[docIndex].getNumberOfPatient(); i++)
 	{
-		if (closeNum >= MAX_CLOSEST) { break; }
-		for (j = 0; j < doctors[i].getNumberOfPatient(); j++)
+		//resetting string
+		tempStr = "";
+		patID = patients[docIndex][i].getId();
+		if (partialID.length() > patID.length())
 		{
-			//resetting string
-			tempStr = "";
-			patID = patients[i][j].getId();
-			if (partialID.length() > patID.length())
-			{
-				break;
-			}
-
-			//adding new string
-			for (k = 0; k < partialID.length(); k++)
-			{
-				tempStr += patID[k];
-			}
-
-			if (tempStr == partialID)
-			{
-				closestMatches[closeNum] = patID;
-				closeNum++;
-			}
-
-			if (closeNum >= MAX_CLOSEST) { break; }
+			break;
 		}
+
+		//adding new string
+		for (j = 0; j < partialID.length(); j++)
+		{
+			tempStr += patID[j];
+		}
+		
+		//checking to see if substrings match
+		if (tempStr == partialID)
+		{
+			closestMatches[closeNum] = patID;
+			closeNum++;
+		}
+
+		//make sure index isn't out of array
+		if (closeNum >= MAX_CLOSEST) { break; }
 	}
 
+	//displaying closest matches
 	for (i = 0; i < MAX_CLOSEST; i++)
 	{
 		if (closestMatches[i] == "") { continue; }
@@ -201,7 +207,7 @@ void displayClosePatientMatches(Patient**& patients, Doctor doctors[], string pa
 * Post: patient data and doctor name printed to console if it exists. Returns id of patient
 * Purpose: To get the user the patient's data and the doctor they belong to
 */
-string searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
+string searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor, int docIndex)
 {
 	const int ID_LENGTH = 11;
 	std::cout << "Enter SSN: ";
@@ -231,7 +237,7 @@ string searchPatient(Patient** patients, Doctor doctors[], int numberOfDoctor)
 		clearScreen();
 		std::cout << "Enter SSN: " << patientID << endl;
 
-		displayClosePatientMatches(patients, doctors, patientID, numberOfDoctor);
+		displayClosePatientMatches(patients, doctors, patientID, numberOfDoctor, docIndex);
 	}
 	clearScreen();
 	cout << "Enter SSN: " << patientID << endl;

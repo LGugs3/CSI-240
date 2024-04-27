@@ -43,8 +43,6 @@ int main()//dont run delete statements dont work
 
 	//loading schedule
 	loadSchedule(scheduler, doctors, numberOfDoctor);
-	//viewSchedule(doctors, numDoctors, scheduler);
-
 	schedulerOperations(patients, doctors, numberOfDoctor, scheduler);
 
 
